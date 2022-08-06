@@ -68,14 +68,26 @@ Note: `get_first`, `get_last` and `get_nth` accept `default` argument that retur
 richset.get_nth(100, default=Something(-1, 'default'))  # => Something(-1, 'default')
 ```
 
-### List manipulations
+### List basic manipulations
+
+```python
+richset.pushed(Something(4, 'four')).to_list()  # => [Something(1, 'one'), Something(2, 'two'), Something(3, 'three'), Something(4, 'four')]
+richset.unshift(Something(4, 'four')).to_list()  # => [Something(4, 'four'), Something(1, 'one'), Something(2, 'two'), Something(3, 'three')]
+richset.popped()  # => Something(3, 'three'), RichSet([Something(1, 'one'), Something(2, 'two')])
+richset.shift()  # => Something(1, 'one'), RichSet([Something(2, 'two'), Something(3, 'three')])
+richset.slice(1, 2).to_list()  # => [Something(2, 'two')]
+richset.divide_at(1)  # => RichSet([Something(1, 'one')]), RichSet([Something(2, 'two'), Something(3, 'three')])
+```
+
+`pushed_all()` and `unshift_all()` are similar to `pushed()` and `unshift()` but they accept multiple items.
+`popped_n()` and `shift_n()` are similar to `popped()` and `shift()` but they accept count of items.
+
+### List functional manipulations
 
 ```python
 richset.unique(lambda s: s.id)  # => unique by id
 richset.map(lambda s: s.id).to_list()  # => [1, 2]
 richset.filter(lambda s: s.id > 1).to_list()  # => [Something(2, 'two'), Something(3, 'three')]
-richset.slice(1, 2).to_list()  # => [Something(2, 'two')]
-richset.divide_at(1)  # => RichSet([Something(1, 'one')]), RichSet([Something(2, 'two'), Something(3, 'three')])
 ```
 
 ### Search

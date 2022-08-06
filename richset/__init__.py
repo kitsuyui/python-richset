@@ -5,6 +5,7 @@ from typing import (
     Callable,
     Generic,
     Hashable,
+    Iterable,
     Iterator,
     Literal,
     TypeVar,
@@ -185,6 +186,55 @@ there are multiple records with the same key.
             self.slice(0, index),
             self.slice(index, self.size()),
         )
+
+    def pushed(self, record: T) -> RichSet[T]:
+        """Returns a new RichSet with the given record pushed to the end."""
+        return RichSet.from_list(self.records + [record])
+
+    def pushed_all(self, records: Iterable[T]) -> RichSet[T]:
+        """Returns a new RichSet with the given records pushed to the end."""
+        return RichSet.from_list(self.records + list(records))
+
+    def unshifted(self, record: T) -> RichSet[T]:
+        """Returns a new RichSet with the given record \
+unshifted to the beginning."""
+        return RichSet.from_list([record] + self.records)
+
+    def unshifted_all(self, records: Iterable[T]) -> RichSet[T]:
+        """Returns a new RichSet with the given records \
+unshifted to the beginning."""
+        return RichSet.from_list(list(records) + self.records)
+
+    def popped(self) -> tuple[T, RichSet[T]]:
+        """Returns a tuple of the popped record and a new RichSet."""
+        if self.is_empty():
+            raise IndexError("pop from empty RichSet")
+        copied = self.records[:]
+        return copied.pop(), RichSet.from_list(copied)
+
+    def popped_n(self, n: int) -> tuple[RichSet[T], RichSet[T]]:
+        """Returns a tuple of the popped records and a new RichSet.
+
+        similar to divide_at, but popped records are reversed."""
+        if self.size() < n:
+            raise IndexError("pop more than size")
+        remains, popped_r = self.divide_at(-n)
+        return popped_r.reversed(), remains
+
+    def shifted(self) -> tuple[T, RichSet[T]]:
+        """Returns a tuple of the shifted record and a new RichSet."""
+        if self.is_empty():
+            raise IndexError("shift from empty RichSet")
+        copied = self.records[:]
+        return copied.pop(0), RichSet.from_list(copied)
+
+    def shifted_n(self, n: int) -> tuple[RichSet[T], RichSet[T]]:
+        """Returns a tuple of the shifted records and a new RichSet.
+
+        (same as divide_at(n))"""
+        if self.size() < n:
+            raise IndexError("shift more than size")
+        return self.divide_at(n)
 
     # search
 
