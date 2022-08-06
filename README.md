@@ -122,7 +122,7 @@ richset.count(lambda s: s.id > 1)  # => 2
 
 ### Set operations
 
-```
+```python
 richset = RichSet.from_list([
     Something(3, 'three'),
     Something(4, 'four'),
