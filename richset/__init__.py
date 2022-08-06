@@ -29,12 +29,27 @@ class RichSet(Generic[T]):
     @classmethod
     def from_list(cls, lst: list[T]) -> RichSet[T]:
         """Returns a new RichSet from a list."""
-        return cls(records=lst[:])
+        return cls.from_iterable(lst)
 
     @classmethod
     def from_tuple(cls, tpl: tuple[T, ...]) -> RichSet[T]:
         """Returns a new RichSet from a tuple."""
-        return cls(records=list(tpl))
+        return cls.from_iterable(tpl)
+
+    @classmethod
+    def from_set(cls, s: set[T]) -> RichSet[T]:
+        """Returns a new RichSet from a set."""
+        return cls.from_iterable(s)
+
+    @classmethod
+    def from_frozenset(cls, s: frozenset[T]) -> RichSet[T]:
+        """Returns a new RichSet from a frozenset."""
+        return cls.from_iterable(s)
+
+    @classmethod
+    def from_iterable(cls, itr: Iterable[T]) -> RichSet[T]:
+        """Returns a new RichSet from an iterable."""
+        return cls(list(itr))
 
     @classmethod
     def from_empty(cls) -> RichSet[T]:

@@ -63,6 +63,28 @@ def test_richset_to_tuple() -> None:
     assert rs.to_tuple() == (Something(1, "one"), Something(2, "two"))
 
 
+def test_richset_from_set() -> None:
+    rs = RichSet.from_set(
+        {
+            Something(1, "one"),
+            Something(2, "two"),
+        }
+    )
+    assert rs.to_set() == {Something(1, "one"), Something(2, "two")}
+
+
+def test_richset_from_frozenset() -> None:
+    rs = RichSet.from_frozenset(
+        frozenset(
+            {
+                Something(1, "one"),
+                Something(2, "two"),
+            }
+        )
+    )
+    assert rs.to_set() == {Something(1, "one"), Something(2, "two")}
+
+
 def test_richset_to_set() -> None:
     rs = RichSet.from_list(
         [
