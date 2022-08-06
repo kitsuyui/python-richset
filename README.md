@@ -53,7 +53,7 @@ richset.to_dict(lambda s: s.id)  # => {1: Something(1, 'one'), 2: Something(2, '
 
 `to_dict()` takes second argument `duplicated` which is a choice of `'error'`, `'first'` or `'last'`.
 
-- if `duplicated` is `'error'`, then `to_dict()` raises `ValueError` if there are duplicated key.
+- if `duplicated` is `'error'`, then `to_dict()` raises `ValueError` if there is a duplicated key.
 - if `duplicated` is `'first'`, then `to_dict()` picks the first one of duplicated key.
 - if `duplicated` is `'last'`, then `to_dict()` picks the last one of duplicated key.
 
