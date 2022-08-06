@@ -59,7 +59,8 @@ richset.slice(1, 2).to_list()  # => [Something(2, 'two')]
 ### Miscs
 
 ```python
-richset.is_empty()  # => True if not empty
+richset.is_empty()  # => True if empty
+richset.is_not_empty()  # => True if not empty
 richset.size()  # => 3
 ```
 

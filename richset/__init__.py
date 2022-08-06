@@ -107,6 +107,10 @@ class RichSet(Generic[T]):
         """Returns True if the RichSet is empty."""
         return not self.records
 
+    def is_non_empty(self) -> bool:
+        """Returns True if the RichSet is non-empty."""
+        return not self.is_empty()
+
     def size(self) -> int:
         """Returns the number of records in the RichSet."""
         return len(self.records)
