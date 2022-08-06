@@ -21,3 +21,14 @@ def test_richset_iter() -> None:
             assert r == Something(1, "one")
         elif i == 1:
             assert r == Something(2, "two")
+
+
+def test_richset_len() -> None:
+    rs = RichSet.from_list(
+        [
+            Something(1, "one"),
+            Something(2, "two"),
+        ]
+    )
+    assert len(rs) == 2
+    assert len(RichSet[str].from_empty()) == 0

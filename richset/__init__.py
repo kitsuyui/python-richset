@@ -45,6 +45,9 @@ class RichSet(Generic[T]):
     def __iter__(self) -> Iterator[T]:
         return iter(self.records)
 
+    def __len__(self) -> int:
+        return self.size()
+
     # conversions
 
     def to_list(self) -> list[T]:
