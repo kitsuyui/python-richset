@@ -27,29 +27,37 @@ class Something:
 richset = RichSet.from_list([
     Something(1, 'one'),
     Something(2, 'two'),
+    Something(3, 'three'),
 ])
 ```
 
 ### Conversions
 
 ```python
-richset.to_list()  # => [Something(1, 'one'), Something(2, 'one')]
-richset.to_dict(lambda s: s.id)  # => {1: Something(1, 'one'), 2: Something(2, 'one')}
+richset.to_list()  # => [Something(1, 'one'), Something(2, 'one'), Something(3, 'three')]
+richset.to_dict(lambda s: s.id)  # => {1: Something(1, 'one'), 2: Something(2, 'one'), 3: Something(3, 'three')}
 ```
 
-### Access to items
+### List accessors
 
 ```python
-richset.is_empty()  # => False
-richset.first()  # => returns first item or raise Error
-richset.get_first()  # => returns first item or None
+richset.first()  # => returns first item `Something(1, 'one')` or raise Error (if empty)
+richset.get_first()  # => returns first item `Something(1, 'one')` or None (if empty)
+richset.last()  # => returns last item `Something(3, 'three')` or raise Error (if empty)
+richset.get_last()  # => returns last item `Something(3, 'three')` or None (if empty)
 ```
 
-### Manipulation
+### List manipulations
 
 ```python
 richset.unique(lambda s: s.id)  # => unique by id
 richset.map(lambda s: s.id).to_list()  # => [1, 2]
+```
+
+### Miscs
+
+```python
+richset.is_empty()  # => True if not empty
 ```
 
 # LICENSE
