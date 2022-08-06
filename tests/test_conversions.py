@@ -11,6 +11,12 @@ class Something:
     name: str
 
 
+@dataclass  # not immutable (not hashable)
+class SomethingElse:
+    id: int
+    name: str
+
+
 def test_richset_from_empty() -> None:
     rs = RichSet[str].from_empty()
     assert rs.is_empty()
@@ -55,6 +61,50 @@ def test_richset_to_tuple() -> None:
         ]
     )
     assert rs.to_tuple() == (Something(1, "one"), Something(2, "two"))
+
+
+def test_richset_to_set() -> None:
+    rs = RichSet.from_list(
+        [
+            Something(1, "one"),
+            Something(2, "two"),
+        ]
+    )
+    assert rs.to_set() == {Something(1, "one"), Something(2, "two")}
+    assert RichSet[Something].from_empty().to_set() == set({})
+
+    rs2 = RichSet.from_list(
+        [
+            SomethingElse(1, "one"),
+            SomethingElse(2, "two"),
+        ]
+    )
+    with pytest.raises(TypeError) as err:
+        rs2.to_set()
+    assert "non-hashable record:" in str(err.value)
+
+
+def test_richset_to_frozenset() -> None:
+    rs = RichSet.from_list(
+        [
+            Something(1, "one"),
+            Something(2, "two"),
+        ]
+    )
+    assert rs.to_frozenset() == frozenset(
+        {Something(1, "one"), Something(2, "two")}
+    )
+    assert RichSet[Something].from_empty().to_frozenset() == set({})
+
+    rs2 = RichSet.from_list(
+        [
+            SomethingElse(1, "one"),
+            SomethingElse(2, "two"),
+        ]
+    )
+    with pytest.raises(TypeError) as err:
+        rs2.to_frozenset()
+    assert "non-hashable record:" in str(err.value)
 
 
 def test_richset_to_dict() -> None:

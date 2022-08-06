@@ -36,6 +36,8 @@ richset = RichSet.from_list([
 ```python
 richset.to_list()  # => [Something(1, 'one'), Something(2, 'one'), Something(3, 'three')]
 richset.to_tuple()  # => (Something(1, 'one'), Something(2, 'one'), Something(3, 'three'))
+richset.to_set()  # => {Something(1, 'one'), Something(2, 'one'), Something(3, 'three')}
+richset.to_frozenset()  # => frozenset({Something(1, 'one'), Something(2, 'one'), Something(3, 'three')})
 richset.to_dict(lambda s: s.id)  # => {1: Something(1, 'one'), 2: Something(2, 'one'), 3: Something(3, 'three')}
 ```
 

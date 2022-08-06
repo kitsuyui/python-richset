@@ -59,6 +59,21 @@ class RichSet(Generic[T]):
         """Returns a tuple of records."""
         return tuple(self.records)
 
+    def to_set(
+        self,
+    ) -> set[T]:  # intersection of T & Hashable
+        """Returns a set of records."""
+        for r in self.records:
+            if not isinstance(r, Hashable):
+                raise TypeError(f"non-hashable record: {r}")
+        return set(self.records)
+
+    def to_frozenset(
+        self,
+    ) -> frozenset[T]:  # intersection of T & Hashable
+        """Returns a frozenset of records."""
+        return frozenset(self.to_set())
+
     def to_dict(
         self,
         key: Callable[[T], Key],
