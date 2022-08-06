@@ -12,17 +12,29 @@ Key = TypeVar("Key", bound=Hashable)
 class RichSet(Generic[T]):
     records: list[T]
 
+    # factory classmethods
+
     @classmethod
     def from_list(cls, lst: list[T]) -> RichSet[T]:
         """Returns a new RichSet from a list."""
         return cls(records=lst[:])
 
+    # magic methods
+
     def __iter__(self) -> Iterator[T]:
         return iter(self.records)
+
+    # conversions
 
     def to_list(self) -> list[T]:
         """Returns a list of records."""
         return self.records[:]
+
+    def to_dict(self, key: Callable[[T], Key]) -> dict[Key, T]:
+        """Returns a dictionary mapping keys to values."""
+        return {key(r): r for r in self.records}
+
+    # list accessors
 
     def get_first(self) -> T | None:
         """Returns the first record in the RichSet
@@ -50,13 +62,7 @@ class RichSet(Generic[T]):
             return self.records[-1]
         raise IndexError("RichSet is empty")
 
-    def is_empty(self) -> bool:
-        """Returns True if the RichSet is empty."""
-        return not self.records
-
-    def to_dict(self, key: Callable[[T], Key]) -> dict[Key, T]:
-        """Returns a dictionary mapping keys to values."""
-        return {key(r): r for r in self.records}
+    # list manipulations
 
     def unique(self, key: Callable[[T], Key]) -> RichSet[T]:
         """Returns a new RichSet with unique records."""
@@ -72,3 +78,9 @@ class RichSet(Generic[T]):
     def map(self, f: Callable[[T], S]) -> RichSet[S]:
         """Returns a new RichSet with mapped records."""
         return RichSet.from_list(list(map(f, self.records)))
+
+    # miscs
+
+    def is_empty(self) -> bool:
+        """Returns True if the RichSet is empty."""
+        return not self.records
