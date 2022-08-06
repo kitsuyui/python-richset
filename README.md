@@ -57,7 +57,7 @@ richset.slice(1, 2).to_list()  # => [Something(2, 'two')]
 richset.divide_at(1)  # => RichSet([Something(1, 'one')]), RichSet([Something(2, 'two'), Something(3, 'three')])
 ```
 
-### Miscs
+### Statistics
 
 ```python
 richset.is_empty()  # => True if empty

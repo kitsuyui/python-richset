@@ -112,6 +112,8 @@ class RichSet(Generic[T]):
             self.slice(index, self.size()),
         )
 
+    # statistics
+
     def is_empty(self) -> bool:
         """Returns True if the RichSet is empty."""
         return not self.records
