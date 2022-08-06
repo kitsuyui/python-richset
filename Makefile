@@ -34,3 +34,11 @@ check_format:
 .PHONY: pytest
 pytest:
 	pytest --cov=richset tests --doctest-modules --cov-report=xml
+
+.PHONY: build
+build:
+	python3 -m build .
+
+.PHONY: clean
+clean:
+	rm -rf *.egg-info dist

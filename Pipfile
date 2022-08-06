@@ -12,11 +12,12 @@ black = "*"
 isort = "*"
 pytest = "*"
 pytest-cov = "*"
-
-[requires]
-python_version = "3.9"
+build = "*"
+setuptools-scm = "*"
 
 [scripts]
+build = "make build"
+clean = "make clean"
 test = "make test"
 lint = "make lint"
 format = "make format"

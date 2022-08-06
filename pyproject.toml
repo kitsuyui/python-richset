@@ -1,3 +1,10 @@
+[build-system]
+requires = ["setuptools",  "setuptools_scm"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
+write_to = "richset/_version.py"
+
 [tool.mypy]
 # https://mypy.readthedocs.io/en/latest/config_file.html
 ignore_missing_imports = true
