@@ -153,6 +153,30 @@ there are multiple records with the same key.
             return self.records[index]
         return default
 
+    def one(self) -> T:
+        """Returns the one record in the RichSet.
+
+        Currently this method is exactly equivalent to `first()`.
+        But this method is intended to be used in uncertain order.
+        So this method might not returns not the first record in the future.
+        """
+        return self.first()
+
+    @overload
+    def get_one(self) -> T | None:
+        ...
+
+    @overload
+    def get_one(self, default: S) -> T | S:
+        ...
+
+    def get_one(self, default: S | None = None) -> T | S | None:
+        """Returns the one record in the RichSet
+        or default value (None) if the RichSet is empty.
+
+        See also `one()`."""
+        return self.get_first(default)
+
     # list manipulations
 
     def filter(self, f: Callable[[T], bool]) -> RichSet[T]:
