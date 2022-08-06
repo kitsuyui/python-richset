@@ -123,3 +123,7 @@ class RichSet(Generic[T]):
     def size(self) -> int:
         """Returns the number of records in the RichSet."""
         return len(self.records)
+
+    def count(self, predicate: Callable[[T], bool]) -> int:
+        """Returns the number of records satisfying the predicate."""
+        return sum(1 for r in self.records if predicate(r))

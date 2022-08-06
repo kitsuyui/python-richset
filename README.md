@@ -63,6 +63,7 @@ richset.divide_at(1)  # => RichSet([Something(1, 'one')]), RichSet([Something(2,
 richset.is_empty()  # => True if empty
 richset.is_not_empty()  # => True if not empty
 richset.size()  # => 3
+richset.count(lambda s: s.id > 1)  # => 2
 ```
 
 # LICENSE
