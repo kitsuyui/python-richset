@@ -64,3 +64,32 @@ def test_richset_slice() -> None:
         Something(3, "three"),
     ]
     assert rs.slice(-1, 3).to_list() == [Something(3, "three")]
+
+
+def test_richset_divide_at() -> None:
+    rs = RichSet.from_list(
+        [
+            Something(1, "one"),
+            Something(2, "two"),
+            Something(3, "three"),
+        ]
+    )
+    rs2, rs3 = rs.divide_at(0)
+    assert rs2.to_list() == []
+    assert rs3.to_list() == rs.to_list()
+
+    rs2, rs3 = rs.divide_at(1)
+    assert rs2.to_list() == [Something(1, "one")]
+    assert rs3.to_list() == [Something(2, "two"), Something(3, "three")]
+
+    rs2, rs3 = rs.divide_at(2)
+    assert rs2.to_list() == [Something(1, "one"), Something(2, "two")]
+    assert rs3.to_list() == [Something(3, "three")]
+
+    rs2, rs3 = rs.divide_at(3)
+    assert rs2.to_list() == [
+        Something(1, "one"),
+        Something(2, "two"),
+        Something(3, "three"),
+    ]
+    assert rs3.to_list() == []

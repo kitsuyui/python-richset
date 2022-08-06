@@ -103,6 +103,15 @@ class RichSet(Generic[T]):
         """Returns a new RichSet with sliced records."""
         return RichSet.from_list(self.records[start:stop])
 
+    def divide_at(self, index: int) -> tuple[RichSet[T], RichSet[T]]:
+        """Returns a tuple of two RichSets,
+        where the first contains records before the index,
+        and the second contains records after the index."""
+        return (
+            self.slice(0, index),
+            self.slice(index, self.size()),
+        )
+
     def is_empty(self) -> bool:
         """Returns True if the RichSet is empty."""
         return not self.records
