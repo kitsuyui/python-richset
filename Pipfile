@@ -1,0 +1,23 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+
+[dev-packages]
+mypy = "*"
+flake8 = "*"
+black = "*"
+isort = "*"
+pytest = "*"
+pytest-cov = "*"
+
+[requires]
+python_version = "3.9"
+
+[scripts]
+test = "make test"
+lint = "make lint"
+format = "make format"
+cover = "make coverage"
