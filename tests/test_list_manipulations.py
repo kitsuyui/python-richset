@@ -45,3 +45,22 @@ def test_richset_map() -> None:
         ]
     )
     assert rs.map(lambda r: r.id).to_list() == [1, 2]
+
+
+def test_richset_slice() -> None:
+    rs = RichSet.from_list(
+        [
+            Something(1, "one"),
+            Something(2, "two"),
+            Something(3, "three"),
+        ]
+    )
+    assert rs.slice(0, 0).to_list() == []
+    assert rs.slice(1, 2).to_list() == [Something(2, "two")]
+    assert rs.slice(0, 3).to_list() == rs.to_list()
+    assert rs.slice(0, 4).to_list() == rs.to_list()
+    assert rs.slice(1, 3).to_list() == [
+        Something(2, "two"),
+        Something(3, "three"),
+    ]
+    assert rs.slice(-1, 3).to_list() == [Something(3, "three")]

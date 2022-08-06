@@ -99,7 +99,9 @@ class RichSet(Generic[T]):
         """Returns a new RichSet with mapped records."""
         return RichSet.from_list(list(map(f, self.records)))
 
-    # miscs
+    def slice(self, start: int, stop: int) -> RichSet[T]:
+        """Returns a new RichSet with sliced records."""
+        return RichSet.from_list(self.records[start:stop])
 
     def is_empty(self) -> bool:
         """Returns True if the RichSet is empty."""
