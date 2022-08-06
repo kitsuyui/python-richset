@@ -369,6 +369,41 @@ unshifted to the beginning."""
         indices = self.indices_of(predicate)
         return [(i, self.records[i]) for i in indices]
 
+    # set operations
+
+    def union(self, other: RichSet[T]) -> RichSet[T]:
+        """Returns a new RichSet with the union of the records."""
+        return RichSet.from_list(list(set(self.records) | set(other.records)))
+
+    def intersection(self, other: RichSet[T]) -> RichSet[T]:
+        """Returns a new RichSet with the intersection of the records."""
+        return RichSet.from_list(list(set(self.records) & set(other.records)))
+
+    def difference(self, other: RichSet[T]) -> RichSet[T]:
+        """Returns a new RichSet with the difference of the records."""
+        return RichSet.from_list(list(set(self.records) - set(other.records)))
+
+    def symmetric_difference(self, other: RichSet[T]) -> RichSet[T]:
+        """Returns a new RichSet with the \
+symmetric difference of the records."""
+        return RichSet.from_list(list(set(self.records) ^ set(other.records)))
+
+    def is_subset(self, other: RichSet[T]) -> bool:
+        """Returns True if self is a subset of other."""
+        return set(self.records).issubset(set(other.records))
+
+    def is_superset(self, other: RichSet[T]) -> bool:
+        """Returns True if self is a superset of other."""
+        return set(self.records).issuperset(set(other.records))
+
+    def is_disjoint(self, other: RichSet[T]) -> bool:
+        """Returns True if self and other are disjoint."""
+        return set(self.records).isdisjoint(set(other.records))
+
+    def is_equal_as_set(self, other: RichSet[T]) -> bool:
+        """Returns True if self and other are same set."""
+        return set(self.records) == set(other.records)
+
     # sortings
 
     def sorted(

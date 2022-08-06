@@ -120,6 +120,25 @@ richset.size()  # => 3
 richset.count(lambda s: s.id > 1)  # => 2
 ```
 
+### Set operations
+
+```
+richset = RichSet.from_list([
+    Something(3, 'three'),
+    Something(4, 'four'),
+    Something(5, 'five'),
+])
+```
+
+```python
+richset.union(richset2).to_set()  # => {Something(1, 'one'), Something(2, 'two'), Something(3, 'three'), Something(4, 'four'), Something(5, 'five')}
+richset.intersection(richset2).to_set()  # => {Something(3, 'three')}
+richset.difference(richset2).to_set()  # => {Something(1, 'one'), Something(2, 'two')}
+richset.symmetric_difference(richset2).to_set()  # => {Something(1, 'one'), Something(2, 'two'), Something(4, 'four'), Something(5, 'five')}
+```
+
+Also `is_subset()`, `is_superset()`, `is_disjoint()` and `is_equal_as_set()` are available.
+
 # LICENSE
 
 The 3-Clause BSD License. See also LICENSE file.
