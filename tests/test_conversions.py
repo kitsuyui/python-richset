@@ -11,6 +11,16 @@ class Something:
     name: str
 
 
+def test_richset_from_list() -> None:
+    rs = RichSet.from_list(
+        [
+            Something(1, "one"),
+            Something(2, "two"),
+        ]
+    )
+    assert rs == RichSet([Something(1, "one"), Something(2, "two")])
+
+
 def test_richset_to_list() -> None:
     rs = RichSet.from_list(
         [
@@ -19,6 +29,26 @@ def test_richset_to_list() -> None:
         ]
     )
     assert rs.to_list() == [Something(1, "one"), Something(2, "two")]
+
+
+def test_richset_from_tuple() -> None:
+    rs = RichSet.from_tuple(
+        (
+            Something(1, "one"),
+            Something(2, "two"),
+        )
+    )
+    assert rs.to_list() == [Something(1, "one"), Something(2, "two")]
+
+
+def test_richset_to_tuple() -> None:
+    rs = RichSet.from_list(
+        [
+            Something(1, "one"),
+            Something(2, "two"),
+        ]
+    )
+    assert rs.to_tuple() == (Something(1, "one"), Something(2, "two"))
 
 
 def test_richset_to_dict() -> None:

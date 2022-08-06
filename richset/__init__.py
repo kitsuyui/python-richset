@@ -29,6 +29,11 @@ class RichSet(Generic[T]):
         """Returns a new RichSet from a list."""
         return cls(records=lst[:])
 
+    @classmethod
+    def from_tuple(cls, tpl: tuple[T, ...]) -> RichSet[T]:
+        """Returns a new RichSet from a tuple."""
+        return cls(records=list(tpl))
+
     # magic methods
 
     def __iter__(self) -> Iterator[T]:
@@ -39,6 +44,10 @@ class RichSet(Generic[T]):
     def to_list(self) -> list[T]:
         """Returns a list of records."""
         return self.records[:]
+
+    def to_tuple(self) -> tuple[T, ...]:
+        """Returns a tuple of records."""
+        return tuple(self.records)
 
     def to_dict(
         self,
