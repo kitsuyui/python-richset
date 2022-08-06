@@ -21,6 +21,20 @@ def test_richset_to_list() -> None:
     assert rs.to_list() == [Something(1, "one"), Something(2, "two")]
 
 
+def test_richset_iter() -> None:
+    rs = RichSet.from_list(
+        [
+            Something(1, "one"),
+            Something(2, "two"),
+        ]
+    )
+    for i, r in enumerate(rs):
+        if i == 0:
+            assert r == Something(1, "one")
+        elif i == 1:
+            assert r == Something(2, "two")
+
+
 def test_richset_to_dict() -> None:
     rs = RichSet.from_list(
         [
