@@ -60,6 +60,7 @@ richset.slice(1, 2).to_list()  # => [Something(2, 'two')]
 
 ```python
 richset.is_empty()  # => True if not empty
+richset.size()  # => 3
 ```
 
 # LICENSE

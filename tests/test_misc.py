@@ -26,3 +26,17 @@ def test_richset_iter() -> None:
 def test_richset_is_empty() -> None:
     assert RichSet.from_list([]).is_empty()
     assert not RichSet.from_list([Something(1, "one")]).is_empty()
+
+
+def test_richset_size() -> None:
+    assert RichSet.from_list([]).size() == 0
+    assert RichSet.from_list([Something(1, "one")]).size() == 1
+    assert (
+        RichSet.from_list(
+            [
+                Something(1, "one"),
+                Something(2, "two"),
+            ]
+        ).size()
+        == 2
+    )
