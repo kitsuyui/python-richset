@@ -19,8 +19,10 @@ def test_richset_get_first() -> None:
         ]
     )
     assert rs.get_first() == Something(1, "one")
+    assert rs.get_first(Something(-1, "default")) == Something(1, "one")
     rs2 = RichSet[Something].from_list([])
     assert rs2.get_first() is None
+    assert rs2.get_first(Something(-1, "default")) == Something(-1, "default")
 
 
 def test_richset_first() -> None:
@@ -44,8 +46,10 @@ def test_richset_get_last() -> None:
         ]
     )
     assert rs.get_last() == Something(2, "two")
+    assert rs.get_last(Something(-1, "default")) == Something(2, "two")
     rs2 = RichSet[Something].from_list([])
     assert rs2.get_last() is None
+    assert rs2.get_last(Something(-1, "default")) == Something(-1, "default")
 
 
 def test_richset_last() -> None:

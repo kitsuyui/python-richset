@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Callable, Generic, Hashable, Iterator, TypeVar
+from typing import Callable, Generic, Hashable, Iterator, TypeVar, overload
 
 T = TypeVar("T")
 S = TypeVar("S")
@@ -36,12 +36,20 @@ class RichSet(Generic[T]):
 
     # list accessors
 
+    @overload
     def get_first(self) -> T | None:
+        ...
+
+    @overload
+    def get_first(self, default: S) -> T | S:
+        ...
+
+    def get_first(self, default: S | None = None) -> T | S | None:
         """Returns the first record in the RichSet
-        or None if the RichSet is empty."""
+        or default value (None) if the RichSet is empty."""
         if self.records:
             return self.records[0]
-        return None
+        return default
 
     def first(self) -> T:
         """Returns the first record in the RichSet."""
@@ -49,12 +57,20 @@ class RichSet(Generic[T]):
             return self.records[0]
         raise IndexError("RichSet is empty")
 
+    @overload
     def get_last(self) -> T | None:
+        ...
+
+    @overload
+    def get_last(self, default: S) -> T | S:
+        ...
+
+    def get_last(self, default: S | None = None) -> T | S | None:
         """Returns the last record in the RichSet
-        or None if the RichSet is empty."""
+        or default value (None) if the RichSet is empty."""
         if self.records:
             return self.records[-1]
-        return None
+        return default
 
     def last(self) -> T:
         """Returns the last record in the RichSet."""
