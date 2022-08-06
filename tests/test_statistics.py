@@ -11,16 +11,18 @@ class Something:
 
 def test_richset_is_empty() -> None:
     assert RichSet.from_list([]).is_empty()
+    assert RichSet[str].from_empty().is_empty()
     assert not RichSet.from_list([Something(1, "one")]).is_empty()
 
 
 def test_richset_is_non_empty() -> None:
     assert RichSet.from_list([]).is_non_empty() is False
+    assert RichSet[str].from_empty().is_non_empty() is False
     assert RichSet.from_list([Something(1, "one")]).is_non_empty() is True
 
 
 def test_richset_size() -> None:
-    assert RichSet.from_list([]).size() == 0
+    assert RichSet[str].from_empty().size() == 0
     assert RichSet.from_list([Something(1, "one")]).size() == 1
     assert (
         RichSet.from_list(

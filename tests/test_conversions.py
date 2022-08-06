@@ -11,6 +11,12 @@ class Something:
     name: str
 
 
+def test_richset_from_empty() -> None:
+    rs = RichSet[str].from_empty()
+    assert rs.is_empty()
+    assert not rs.is_non_empty()
+
+
 def test_richset_from_list() -> None:
     rs = RichSet.from_list(
         [

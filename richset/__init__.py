@@ -35,6 +35,11 @@ class RichSet(Generic[T]):
         """Returns a new RichSet from a tuple."""
         return cls(records=list(tpl))
 
+    @classmethod
+    def from_empty(cls) -> RichSet[T]:
+        """Returns an empty RichSet."""
+        return cls(records=[])
+
     # magic methods
 
     def __iter__(self) -> Iterator[T]:
