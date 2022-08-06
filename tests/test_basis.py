@@ -66,6 +66,8 @@ def test_richset_get_first() -> None:
         ]
     )
     assert rs.get_first() == Something(1, "one")
+    rs2 = RichSet[Something].from_list([])
+    assert rs2.get_first() is None
 
 
 def test_richset_first() -> None:
