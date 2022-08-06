@@ -14,41 +14,52 @@ class RichSet(Generic[T]):
 
     @classmethod
     def from_list(cls, lst: list[T]) -> RichSet[T]:
+        """Returns a new RichSet from a list."""
         return cls(records=lst[:])
 
     def __iter__(self) -> Iterator[T]:
         return iter(self.records)
 
     def to_list(self) -> list[T]:
+        """Returns a list of records."""
         return self.records[:]
 
     def get_first(self) -> T | None:
+        """Returns the first record in the RichSet
+        or None if the RichSet is empty."""
         if self.records:
             return self.records[0]
         return None
 
     def first(self) -> T:
+        """Returns the first record in the RichSet."""
         if self.records:
             return self.records[0]
         raise IndexError("RichSet is empty")
 
     def get_last(self) -> T | None:
+        """Returns the last record in the RichSet
+        or None if the RichSet is empty."""
         if self.records:
             return self.records[-1]
         return None
 
     def last(self) -> T:
+        """Returns the last record in the RichSet."""
         if self.records:
             return self.records[-1]
         raise IndexError("RichSet is empty")
 
     def is_empty(self) -> bool:
+        """Returns True if the RichSet is empty."""
         return not self.records
 
     def to_dict(self, key: Callable[[T], Key]) -> dict[Key, T]:
+        """Returns a dictionary mapping keys to values."""
         return {key(r): r for r in self.records}
 
     def unique(self, key: Callable[[T], Key]) -> RichSet[T]:
+        """Returns a new RichSet with unique records."""
         new_records = []
         seen = set()
         for r in self.records:
@@ -59,4 +70,5 @@ class RichSet(Generic[T]):
         return RichSet.from_list(new_records)
 
     def map(self, f: Callable[[T], S]) -> RichSet[S]:
+        """Returns a new RichSet with mapped records."""
         return RichSet.from_list(list(map(f, self.records)))
