@@ -60,7 +60,7 @@ if `duplicated` is `'last'`, then `to_dict()` picks the last one of duplicated k
 `to_dict_of_list()` is similar to `to_dict()` but it returns a dict of list.
 
 ```python
-richset.to_dict_of_list(lambda s: s.name)  # => {'one': [Something(1, 'john'), Something(2, 'john')], 'three': [Something(3, 'jane')]}
+richset.to_dict_of_list(lambda s: s.name)  # => {'john': [Something(1, 'john'), Something(2, 'john')], 'jane': [Something(3, 'jane')]}
 ```
 
 ### List accessors
