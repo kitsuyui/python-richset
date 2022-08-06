@@ -137,10 +137,22 @@ class RichSet(Generic[T]):
 
     # search
 
-    def index_of(self, predicate: Callable[[T], bool]) -> int:
+    def index_of(
+        self,
+        predicate: Callable[[T], bool],
+        *,
+        reverse: bool = False,
+    ) -> int:
         """Returns the index of the first record satisfying the predicate.
 
         returns -1 if no record satisfies the predicate."""
+        if reverse:
+            size = self.size()
+            for i, item in enumerate(reversed(self.records)):
+                if predicate(item):
+                    return size - i - 1
+            return -1
+
         for i, r in enumerate(self.records):
             if predicate(r):
                 return i
@@ -158,6 +170,18 @@ class RichSet(Generic[T]):
 
         if no record satisfies the predicate, returns (-1, None)."""
         idx = self.index_of(predicate)
+        if idx == -1:
+            return (-1, None)
+        return (idx, self.records[idx])
+
+    def search_last(
+        self,
+        predicate: Callable[[T], bool],
+    ) -> tuple[int, T | None]:
+        """Returns the last record satisfying the predicate.
+
+        if no record satisfies the predicate, returns (-1, None)."""
+        idx = self.index_of(predicate, reverse=True)
         if idx == -1:
             return (-1, None)
         return (idx, self.records[idx])

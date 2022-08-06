@@ -71,6 +71,7 @@ richset.divide_at(1)  # => RichSet([Something(1, 'one')]), RichSet([Something(2,
 richset.index(lambda s: s.id == 2)  # => 1
 richset.indices(lambda s: s.id == 2)  # => [1]
 richset.search_first(lambda s: s.id == 2)  # => Something(2, 'two')
+richset.search_last(lambda s: s.id == 2)  # => Something(2, 'two')
 richset.search_all(lambda s: s.id == 2)  # => [Something(2, 'two')]
 ```
 
