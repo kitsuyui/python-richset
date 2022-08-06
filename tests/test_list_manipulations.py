@@ -9,6 +9,20 @@ class Something:
     name: str
 
 
+def test_richset_filter() -> None:
+    rs = RichSet.from_list(
+        [
+            Something(1, "one"),
+            Something(2, "two"),
+            Something(3, "two"),
+        ]
+    )
+    assert rs.filter(lambda r: r.id > 1).to_list() == [
+        Something(2, "two"),
+        Something(3, "two"),
+    ]
+
+
 def test_richset_unique() -> None:
     rs = RichSet.from_list(
         [

@@ -52,6 +52,7 @@ richset.get_last()  # => returns last item `Something(3, 'three')` or None (if e
 ```python
 richset.unique(lambda s: s.id)  # => unique by id
 richset.map(lambda s: s.id).to_list()  # => [1, 2]
+richset.filter(lambda s: s.id > 1).to_list()  # => [Something(2, 'two'), Something(3, 'three')]
 ```
 
 ### Miscs

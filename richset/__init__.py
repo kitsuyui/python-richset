@@ -80,6 +80,10 @@ class RichSet(Generic[T]):
 
     # list manipulations
 
+    def filter(self, f: Callable[[T], bool]) -> RichSet[T]:
+        """Returns a new RichSet with filtered records."""
+        return RichSet.from_list(list(filter(f, self.records)))
+
     def unique(self, key: Callable[[T], Key]) -> RichSet[T]:
         """Returns a new RichSet with unique records."""
         new_records = []
