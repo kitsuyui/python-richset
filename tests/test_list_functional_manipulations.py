@@ -45,3 +45,17 @@ def test_richset_map() -> None:
         ]
     )
     assert rs.map(lambda r: r.id).to_list() == [1, 2]
+
+
+def test_richset_reduce() -> None:
+    rs = RichSet.from_list(
+        [
+            Something(1, "one"),
+            Something(2, "two"),
+            Something(3, "three"),
+            Something(4, "four"),
+        ]
+    )
+    assert rs.reduce(lambda acc, r: acc + r.id, 0) == 10
+    assert rs.reduce(lambda acc, r: acc * r.id, 1) == 24
+    assert rs.reduce(lambda acc, r: acc + r.name, "") == "onetwothreefour"

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import functools
 from dataclasses import dataclass
 from typing import (
     Callable,
@@ -205,6 +206,14 @@ there are multiple records with the same key.
     def map(self, f: Callable[[T], S]) -> RichSet[S]:
         """Returns a new RichSet with mapped records."""
         return RichSet.from_list(list(map(f, self.records)))
+
+    def reduce(
+        self,
+        fn: Callable[[S, T], S],
+        initial: S,
+    ) -> S:
+        """Returns a reduced value."""
+        return functools.reduce(fn, self.records[:], initial)
 
     def slice(self, start: int, stop: int) -> RichSet[T]:
         """Returns a new RichSet with sliced records."""
