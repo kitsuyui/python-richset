@@ -57,6 +57,15 @@ richset.slice(1, 2).to_list()  # => [Something(2, 'two')]
 richset.divide_at(1)  # => RichSet([Something(1, 'one')]), RichSet([Something(2, 'two'), Something(3, 'three')])
 ```
 
+### Search
+
+```python
+richset.index(lambda s: s.id == 2)  # => 1
+richset.indices(lambda s: s.id == 2)  # => [1]
+richset.search_first(lambda s: s.id == 2)  # => Something(2, 'two')
+richset.search_all(lambda s: s.id == 2)  # => [Something(2, 'two')]
+```
+
 ### Statistics
 
 ```python

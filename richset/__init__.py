@@ -112,6 +112,44 @@ class RichSet(Generic[T]):
             self.slice(index, self.size()),
         )
 
+    # search
+
+    def index_of(self, predicate: Callable[[T], bool]) -> int:
+        """Returns the index of the first record satisfying the predicate.
+
+        returns -1 if no record satisfies the predicate."""
+        for i, r in enumerate(self.records):
+            if predicate(r):
+                return i
+        return -1
+
+    def indices_of(self, predicate: Callable[[T], bool]) -> list[int]:
+        """Returns a list of indices of records satisfying the predicate."""
+        return [i for i, r in enumerate(self.records) if predicate(r)]
+
+    def search_first(
+        self,
+        predicate: Callable[[T], bool],
+    ) -> tuple[int, T | None]:
+        """Returns the first record satisfying the predicate.
+
+        if no record satisfies the predicate, returns (-1, None)."""
+        idx = self.index_of(predicate)
+        if idx == -1:
+            return (-1, None)
+        return (idx, self.records[idx])
+
+    def search_all(
+        self,
+        predicate: Callable[[T], bool],
+    ) -> list[tuple[int, T]]:
+        """Returns a list of tuples of indices and records
+        satisfying the predicate.
+
+        returns an empty list if no record satisfies the predicate."""
+        indices = self.indices_of(predicate)
+        return [(i, self.records[i]) for i in indices]
+
     # statistics
 
     def is_empty(self) -> bool:
