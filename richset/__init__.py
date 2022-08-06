@@ -32,6 +32,16 @@ class RichSet(Generic[T]):
             return self.records[0]
         raise IndexError("RichSet is empty")
 
+    def get_last(self) -> T | None:
+        if self.records:
+            return self.records[-1]
+        return None
+
+    def last(self) -> T:
+        if self.records:
+            return self.records[-1]
+        raise IndexError("RichSet is empty")
+
     def is_empty(self) -> bool:
         return not self.records
 

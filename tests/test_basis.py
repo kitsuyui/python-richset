@@ -97,6 +97,31 @@ def test_richset_first() -> None:
         RichSet.from_list([]).first()
 
 
+def test_richset_get_last() -> None:
+    rs = RichSet.from_list(
+        [
+            Something(1, "one"),
+            Something(2, "two"),
+        ]
+    )
+    assert rs.get_last() == Something(2, "two")
+    rs2 = RichSet[Something].from_list([])
+    assert rs2.get_last() is None
+
+
+def test_richset_last() -> None:
+    rs = RichSet.from_list(
+        [
+            Something(1, "one"),
+            Something(2, "two"),
+        ]
+    )
+    assert rs.last() == Something(2, "two")
+
+    with pytest.raises(IndexError):
+        RichSet.from_list([]).last()
+
+
 def test_richset_is_empty() -> None:
     assert RichSet.from_list([]).is_empty()
     assert not RichSet.from_list([Something(1, "one")]).is_empty()
