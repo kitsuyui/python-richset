@@ -63,3 +63,34 @@ def test_richset_last() -> None:
 
     with pytest.raises(IndexError):
         RichSet.from_list([]).last()
+
+
+def test_richset_nth() -> None:
+    rs = RichSet.from_list(
+        [
+            Something(1, "one"),
+            Something(2, "two"),
+        ]
+    )
+    assert rs.nth(0) == Something(1, "one")
+    assert rs.nth(1) == Something(2, "two")
+    with pytest.raises(IndexError):
+        rs.nth(2)
+
+    with pytest.raises(IndexError):
+        RichSet.from_list([]).nth(0)
+
+
+def test_richset_get_nth() -> None:
+    rs = RichSet.from_list(
+        [
+            Something(1, "one"),
+            Something(2, "two"),
+        ]
+    )
+    assert rs.get_nth(0) == Something(1, "one")
+    assert rs.get_nth(1) == Something(2, "two")
+    assert rs.get_nth(2, Something(-1, "default")) == Something(-1, "default")
+    rs2 = RichSet[Something].from_list([])
+    assert rs2.get_nth(0) is None
+    assert rs2.get_nth(1, Something(-1, "default")) == Something(-1, "default")

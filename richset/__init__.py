@@ -78,6 +78,27 @@ class RichSet(Generic[T]):
             return self.records[-1]
         raise IndexError("RichSet is empty")
 
+    def nth(self, index: int) -> T:
+        """Returns the record at the given index."""
+        if index < self.size():
+            return self.records[index]
+        raise IndexError("index out of range")
+
+    @overload
+    def get_nth(self, index: int) -> T | None:
+        ...
+
+    @overload
+    def get_nth(self, index: int, default: S) -> T | S:
+        ...
+
+    def get_nth(self, index: int, default: S | None = None) -> T | S | None:
+        """Returns the record at the given index
+        or default value (None) if the index is out of range."""
+        if index < self.size():
+            return self.records[index]
+        return default
+
     # list manipulations
 
     def filter(self, f: Callable[[T], bool]) -> RichSet[T]:

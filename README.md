@@ -45,6 +45,14 @@ richset.first()  # => returns first item `Something(1, 'one')` or raise Error (i
 richset.get_first()  # => returns first item `Something(1, 'one')` or None (if empty)
 richset.last()  # => returns last item `Something(3, 'three')` or raise Error (if empty)
 richset.get_last()  # => returns last item `Something(3, 'three')` or None (if empty)
+richset.nth(2)  # => returns 3rd item `Something(3, 'three')` or raise Error (if empty)
+richset.get_nth(2)  # => returns 3rd item `Something(3, 'three')` or None (if empty)
+```
+
+Note: `get_first`, `get_last` and `get_nth` accept `default` argument that returns specified value instead of None.
+
+```python
+richset.get_nth(100, default=Something(-1, 'default'))  # => Something(-1, 'default')
 ```
 
 ### List manipulations
