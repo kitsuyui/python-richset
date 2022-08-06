@@ -16,4 +16,4 @@ def test_richset_from_list() -> None:
             Something(2, "two"),
         ]
     )
-    assert rs == RichSet([Something(1, "one"), Something(2, "two")])
+    assert rs == RichSet.from_list([Something(1, "one"), Something(2, "two")])

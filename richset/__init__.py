@@ -22,7 +22,7 @@ Key = TypeVar("Key", bound=Hashable)
 
 @dataclass(frozen=True)
 class RichSet(Generic[T]):
-    records: list[T]
+    records: tuple[T, ...]
 
     # factory classmethods
 
@@ -49,12 +49,12 @@ class RichSet(Generic[T]):
     @classmethod
     def from_iterable(cls, itr: Iterable[T]) -> RichSet[T]:
         """Returns a new RichSet from an iterable."""
-        return cls(list(itr))
+        return cls(tuple(itr))
 
     @classmethod
     def from_empty(cls) -> RichSet[T]:
         """Returns an empty RichSet."""
-        return cls(records=[])
+        return cls(records=())
 
     # magic methods
 
@@ -68,7 +68,7 @@ class RichSet(Generic[T]):
 
     def to_list(self) -> list[T]:
         """Returns a list of records."""
-        return self.records[:]
+        return list(self.records)
 
     def to_tuple(self) -> tuple[T, ...]:
         """Returns a tuple of records."""
@@ -247,7 +247,7 @@ there are multiple records with the same key.
 
     def slice(self, start: int, stop: int) -> RichSet[T]:
         """Returns a new RichSet with sliced records."""
-        return RichSet.from_list(self.records[start:stop])
+        return RichSet.from_tuple(self.records[start:stop])
 
     def divide_at(self, index: int) -> tuple[RichSet[T], RichSet[T]]:
         """Returns a tuple of two RichSets,
@@ -260,27 +260,27 @@ there are multiple records with the same key.
 
     def pushed(self, record: T) -> RichSet[T]:
         """Returns a new RichSet with the given record pushed to the end."""
-        return RichSet.from_list(self.records + [record])
+        return RichSet.from_tuple(self.records + (record,))
 
     def pushed_all(self, records: Iterable[T]) -> RichSet[T]:
         """Returns a new RichSet with the given records pushed to the end."""
-        return RichSet.from_list(self.records + list(records))
+        return RichSet.from_tuple(self.records + tuple(records))
 
     def unshifted(self, record: T) -> RichSet[T]:
         """Returns a new RichSet with the given record \
 unshifted to the beginning."""
-        return RichSet.from_list([record] + self.records)
+        return RichSet.from_tuple((record,) + self.records)
 
     def unshifted_all(self, records: Iterable[T]) -> RichSet[T]:
         """Returns a new RichSet with the given records \
 unshifted to the beginning."""
-        return RichSet.from_list(list(records) + self.records)
+        return RichSet.from_tuple(tuple(records) + self.records)
 
     def popped(self) -> tuple[T, RichSet[T]]:
         """Returns a tuple of the popped record and a new RichSet."""
         if self.is_empty():
             raise IndexError("pop from empty RichSet")
-        copied = self.records[:]
+        copied = self.to_list()
         return copied.pop(), RichSet.from_list(copied)
 
     def popped_n(self, n: int) -> tuple[RichSet[T], RichSet[T]]:
@@ -296,7 +296,7 @@ unshifted to the beginning."""
         """Returns a tuple of the shifted record and a new RichSet."""
         if self.is_empty():
             raise IndexError("shift from empty RichSet")
-        copied = self.records[:]
+        copied = self.to_list()
         return copied.pop(0), RichSet.from_list(copied)
 
     def shifted_n(self, n: int) -> tuple[RichSet[T], RichSet[T]]:
@@ -413,12 +413,12 @@ symmetric difference of the records."""
         reverse: bool = False,
     ) -> RichSet[T]:
         """Returns a new RichSet sorted bythe given key."""
-        sorted_ = list(sorted(self.records, key=key, reverse=reverse))
-        return RichSet(sorted_)
+        sorted_ = tuple(sorted(self.records, key=key, reverse=reverse))
+        return RichSet.from_tuple(sorted_)
 
     def reversed(self) -> RichSet[T]:
         """Returns a new RichSet with reversed records."""
-        return RichSet.from_list(self.records[::-1])
+        return RichSet.from_tuple(self.records[::-1])
 
     # statistics
 

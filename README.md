@@ -5,6 +5,16 @@
 [![codecov](https://codecov.io/gh/kitsuyui/python-richset/branch/main/graph/badge.svg?token=LH210UT9Q0)](https://codecov.io/gh/kitsuyui/python-richset)
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 
+richset interporlates with set, dict, and list.
+
+## Motivations and Concepts
+
+- richset provides useful functions for common use cases of set, dict, and list.
+- builtin set, dict and list requires many boilerplate codes.
+- Pure Python package.
+- Fully typing supported.
+- No magic. No meta-programming.
+
 ## Install
 
 ```sh
