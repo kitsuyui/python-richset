@@ -53,9 +53,9 @@ richset.to_dict(lambda s: s.id)  # => {1: Something(1, 'one'), 2: Something(2, '
 
 `to_dict()` takes second argument `duplicated` which is a choice of `'error'`, `'first'` or `'last'`.
 
-if `duplicated` is `'error'`, then `to_dict()` raises `ValueError` if there are duplicated key
-if `duplicated` is `'first'`, then `to_dict()` picks the first one of duplicated key.
-if `duplicated` is `'last'`, then `to_dict()` picks the last one of duplicated key.
+- if `duplicated` is `'error'`, then `to_dict()` raises `ValueError` if there are duplicated key.
+- if `duplicated` is `'first'`, then `to_dict()` picks the first one of duplicated key.
+- if `duplicated` is `'last'`, then `to_dict()` picks the last one of duplicated key.
 
 `to_dict_of_list()` is similar to `to_dict()` but it returns a dict of list.
 
@@ -93,8 +93,8 @@ richset.slice(1, 2).to_list()  # => [Something(2, 'two')]
 richset.divide_at(1)  # => RichSet([Something(1, 'one')]), RichSet([Something(2, 'two'), Something(3, 'three')])
 ```
 
-`pushed_all()` and `unshift_all()` are similar to `pushed()` and `unshift()` but they accept multiple items.
-`popped_n()` and `shift_n()` are similar to `popped()` and `shift()` but they accept count of items.
+- `pushed_all()` and `unshift_all()` are similar to `pushed()` and `unshift()` but they accept multiple items.
+- `popped_n()` and `shift_n()` are similar to `popped()` and `shift()` but they accept count of items.
 
 ### List functional manipulations
 
