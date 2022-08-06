@@ -3,6 +3,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Callable, Generic, Hashable, Iterator, TypeVar, overload
 
+from .comparable import Comparable
+
 T = TypeVar("T")
 S = TypeVar("S")
 Key = TypeVar("Key", bound=Hashable)
@@ -170,6 +172,22 @@ class RichSet(Generic[T]):
         returns an empty list if no record satisfies the predicate."""
         indices = self.indices_of(predicate)
         return [(i, self.records[i]) for i in indices]
+
+    # sortings
+
+    def sorted(
+        self,
+        *,
+        key: Callable[[T], Comparable],
+        reverse: bool = False,
+    ) -> RichSet[T]:
+        """Returns a new RichSet sorted bythe given key."""
+        sorted_ = list(sorted(self.records, key=key, reverse=reverse))
+        return RichSet(sorted_)
+
+    def reversed(self) -> RichSet[T]:
+        """Returns a new RichSet with reversed records."""
+        return RichSet.from_list(self.records[::-1])
 
     # statistics
 

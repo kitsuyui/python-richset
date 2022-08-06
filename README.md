@@ -74,6 +74,13 @@ richset.search_first(lambda s: s.id == 2)  # => Something(2, 'two')
 richset.search_all(lambda s: s.id == 2)  # => [Something(2, 'two')]
 ```
 
+### Sorts
+
+```python
+richset.sorted(key=lambda s: s.name, reverse=True).to_list()  # => [Something(2, 'two'), Something(3, 'three'), Something(1, 'one')]
+richset.reversed().to_list()  # => [Something(3, 'three'), Something(2, 'two'), Something(1, 'one')]
+```
+
 ### Statistics
 
 ```python
