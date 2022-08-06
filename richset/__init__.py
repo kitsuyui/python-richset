@@ -1,7 +1,15 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Callable, Generic, Hashable, Iterator, TypeVar, overload
+from typing import (
+    Callable,
+    Generic,
+    Hashable,
+    Iterator,
+    Literal,
+    TypeVar,
+    overload,
+)
 
 from .comparable import Comparable
 
@@ -32,9 +40,43 @@ class RichSet(Generic[T]):
         """Returns a list of records."""
         return self.records[:]
 
-    def to_dict(self, key: Callable[[T], Key]) -> dict[Key, T]:
-        """Returns a dictionary mapping keys to values."""
-        return {key(r): r for r in self.records}
+    def to_dict(
+        self,
+        key: Callable[[T], Key],
+        *,
+        duplicated: Literal["error", "first", "last"] = "error",
+    ) -> dict[Key, T]:
+        """Returns a dictionary mapping keys to values.
+
+        if duplicated is 'error' (default), raises an error if \
+there are multiple records with the same key.
+        if duplicated is 'first', returns the first record with the same key.
+        if duplicated is 'last', returns the last record with the same key."""
+        base = self.to_dict_of_list(key=key)
+
+        if duplicated == "error":
+            if len(base) != self.size():
+                raise ValueError("duplicate keys")
+            return {k: v[0] for k, v in base.items()}
+        elif duplicated == "first":
+            return {k: v[0] for k, v in base.items()}
+        elif duplicated == "last":
+            return {k: v[-1] for k, v in base.items()}
+        else:
+            raise ValueError("invalid duplicated value")
+
+    def to_dict_of_list(
+        self,
+        key: Callable[[T], Key],
+    ) -> dict[Key, list[T]]:
+        """Returns a dictionary mapping keys to lists of values."""
+        d: dict[Key, list[T]] = {}
+        for r in self.records:
+            k = key(r)
+            if k not in d:
+                d[k] = []
+            d[k].append(r)
+        return d
 
     # list accessors
 

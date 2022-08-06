@@ -38,6 +38,18 @@ richset.to_list()  # => [Something(1, 'one'), Something(2, 'one'), Something(3, 
 richset.to_dict(lambda s: s.id)  # => {1: Something(1, 'one'), 2: Something(2, 'one'), 3: Something(3, 'three')}
 ```
 
+`to_dict()` takes second argument `duplicated` which is a choice of `'error'`, `'first'` or `'last'`.
+
+if `duplicated` is `'error'`, then `to_dict()` raises `ValueError` if there are duplicated key
+if `duplicated` is `'first'`, then `to_dict()` picks the first one of duplicated key.
+if `duplicated` is `'last'`, then `to_dict()` picks the last one of duplicated key.
+
+`to_dict_of_list()` is similar to `to_dict()` but it returns a dict of list.
+
+```python
+richset.to_dict_of_list(lambda s: s.name)  # => {'one': [Something(1, 'john'), Something(2, 'john')], 'three': [Something(3, 'jane')]}
+```
+
 ### List accessors
 
 ```python
