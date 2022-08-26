@@ -437,3 +437,42 @@ symmetric difference of the records."""
     def count(self, predicate: Callable[[T], bool]) -> int:
         """Returns the number of records satisfying the predicate."""
         return sum(1 for r in self.records if predicate(r))
+
+    # groupings
+
+    def group_by(
+        self,
+        key: Callable[[T], Key],
+    ) -> dict[Key, RichSet[T]]:
+        """Returns a dict of RichSets grouped by the given key."""
+        return {
+            k: RichSet.from_list(list(v))
+            for k, v in self.to_dict_of_list(key).items()
+        }
+
+    def size_of_group_by(
+        self,
+        key: Callable[[T], Key],
+    ) -> dict[Key, int]:
+        """Returns a dict of sizes of RichSets grouped by the given key."""
+        return {k: v.size() for k, v in self.group_by(key).items()}
+
+    def count_of_group_by(
+        self, *, key: Callable[[T], Key], predicate: Callable[[T], bool]
+    ) -> dict[Key, int]:
+        """Returns a dict of the number of records satisfying \
+the predicate grouped by the given key."""
+        return {k: v.count(predicate) for k, v in self.group_by(key).items()}
+
+    def aggregate_by(
+        self,
+        *,
+        key: Callable[[T], Key],
+        fn: Callable[[S, T], S],
+        initial: S,
+    ) -> dict[Key, S]:
+        """Returns a dict of aggregated values grouped by the given key."""
+        return {
+            k: v.reduce(fn, initial=initial)
+            for k, v in self.group_by(key).items()
+        }
