@@ -149,6 +149,15 @@ richset.symmetric_difference(richset2).to_set()  # => {Something(1, 'one'), Some
 
 Also `is_subset()`, `is_superset()`, `is_disjoint()` and `is_equal_as_set()` are available.
 
+### Grouping
+
+```python
+richset.group_by(lambda item: item.id % 2)  # => {1: RichSet(records=(Something(id=1, name='one'), Something(id=3, name='three'))), 0: RichSet(records=(Something(id=2, name='two'),))}
+richset.size_of_group_by(lambda item: item.id % 2)  # => {1: 2, 0: 1}
+richset.count_of_group_by(key=lambda item: item.id % 2, predicate=lambda item: item.name.startswith('t'))  # => {1: 1, 0: 1}
+richset.aggregate_by(key=lambda r: r.id % 2, fn=lambda a, b: a + b.name, initial='')  # => {1: 'onethree', 0: 'two'}
+```
+
 # LICENSE
 
 The 3-Clause BSD License. See also LICENSE file.
