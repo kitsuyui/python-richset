@@ -167,9 +167,21 @@ def test_richset_to_dict() -> None:
         "jane": Something(2, "jane"),
     }
 
-    with pytest.raises(ValueError) as err:
-        rs.to_dict(lambda r: r.name, duplicated="invalid")  # type: ignore
-    assert str(err.value) == "invalid duplicated value"
+    # test with a custom duplicate key function
+    assert rs.to_dict(
+        lambda r: r.name,
+        duplicated=lambda items: min(items, key=lambda item: item.id),
+    ) == {
+        "john": Something(1, "john"),
+        "jane": Something(2, "jane"),
+    }
+    assert rs.to_dict(
+        lambda r: r.name,
+        duplicated=lambda items: max(items, key=lambda item: item.id),
+    ) == {
+        "john": Something(3, "john"),
+        "jane": Something(2, "jane"),
+    }
 
 
 def test_richset_to_dict_of_list() -> None:

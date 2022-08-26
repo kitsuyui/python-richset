@@ -18,6 +18,7 @@ from .comparable import Comparable
 T = TypeVar("T")
 S = TypeVar("S")
 Key = TypeVar("Key", bound=Hashable)
+OnDuplicateActions = Literal["error", "first", "last"]
 
 
 @dataclass(frozen=True)
@@ -93,7 +94,7 @@ class RichSet(Generic[T]):
         self,
         key: Callable[[T], Key],
         *,
-        duplicated: Literal["error", "first", "last"] = "error",
+        duplicated: OnDuplicateActions | Callable[[list[T]], T] = "error",
     ) -> dict[Key, T]:
         """Returns a dictionary mapping keys to values.
 
@@ -112,7 +113,7 @@ there are multiple records with the same key.
         elif duplicated == "last":
             return {k: v[-1] for k, v in base.items()}
         else:
-            raise ValueError("invalid duplicated value")
+            return {k: duplicated(v) for k, v in base.items()}
 
     def to_dict_of_list(
         self,
