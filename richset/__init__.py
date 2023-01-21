@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import functools
 import itertools
+import sys
 from dataclasses import dataclass
 from typing import (
     Callable,
@@ -9,10 +10,14 @@ from typing import (
     Hashable,
     Iterable,
     Iterator,
-    Literal,
     TypeVar,
     overload,
 )
+
+if sys.version_info >= (3, 8):
+    from typing import Literal
+else:
+    from typing_extensions import Literal
 
 from .comparable import Comparable
 
@@ -96,7 +101,7 @@ class RichSet(Generic[T]):
         self,
         key: Callable[[T], Key],
         *,
-        duplicated: OnDuplicateActions | Callable[[list[T]], T] = "error",
+        duplicated: (OnDuplicateActions | Callable[[list[T]], T]) = "error",
     ) -> dict[Key, T]:
         """Returns a dictionary mapping keys to values.
 
