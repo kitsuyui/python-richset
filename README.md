@@ -112,6 +112,8 @@ richset.indices(lambda s: s.id == 2)  # => [1]
 richset.search_first(lambda s: s.id == 2)  # => Something(2, 'two')
 richset.search_last(lambda s: s.id == 2)  # => Something(2, 'two')
 richset.search_all(lambda s: s.id == 2)  # => [Something(2, 'two')]
+richset.contains(lambda s: s.id == 2)  # => True
+richset.has(Something(2, 'two'))  # => True
 ```
 
 ### Sorts

@@ -331,6 +331,14 @@ unshifted to the beginning."""
                 return i
         return -1
 
+    def contains(self, predicate: Callable[[T], bool]) -> bool:
+        """Returns True if any record satisfies the predicate."""
+        return self.index_of(predicate) != -1
+
+    def has(self, record: T) -> bool:
+        """Returns True if the record is in the RichSet."""
+        return record in self.records
+
     def indices_of(self, predicate: Callable[[T], bool]) -> list[int]:
         """Returns a list of indices of records satisfying the predicate."""
         return [i for i, r in enumerate(self.records) if predicate(r)]
