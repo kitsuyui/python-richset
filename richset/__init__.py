@@ -529,3 +529,25 @@ the predicate grouped by the given key."""
             k: v.reduce(fn, initial=initial)
             for k, v in self.group_by(key).items()
         }
+
+    # Paging
+
+    def page(
+        self,
+        offset: int,
+        limit: int,
+    ) -> RichSet[T]:
+        """Returns a new RichSet with the records \
+in the given page (offset and limit)."""
+        return RichSet.from_tuple(self.records[offset : offset + limit])
+
+    def split_into_pages(
+        self,
+        size: int,
+    ) -> list[RichSet[T]]:
+        """Returns a list of RichSets with the records \
+split into pages (limit)."""
+        return [
+            self.page(offset=offset, limit=size)
+            for offset in range(0, self.size(), size)
+        ]

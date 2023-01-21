@@ -167,6 +167,13 @@ richset.count_of_group_by(key=lambda item: item.id % 2, predicate=lambda item: i
 richset.aggregate_by(key=lambda r: r.id % 2, fn=lambda a, b: a + b.name, initial='')  # => {1: 'onethree', 0: 'two'}
 ```
 
+## Paging
+
+```python
+richset.page(1, 2).to_list()  # => [Something(1, 'one'), Something(2, 'two')]
+richset.split_into_pages(2).to_list()  # => [RichSet([Something(1, 'one'), Something(2, 'two')]), RichSet([Something(3, 'three')])]
+```
+
 # LICENSE
 
 The 3-Clause BSD License. See also LICENSE file.
