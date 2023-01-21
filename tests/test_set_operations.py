@@ -242,3 +242,8 @@ def test_richset_zip() -> None:
         (Something(2, "two"), Foo(4, "four")),
         (None, Foo(5, "five")),
     }
+    assert rs1.zip_longest(rs2, fillvalue=Something(3, "three")).to_set() == {
+        (Something(1, "one"), Foo(3, "three")),
+        (Something(2, "two"), Foo(4, "four")),
+        (Something(3, "three"), Foo(5, "five")),
+    }
