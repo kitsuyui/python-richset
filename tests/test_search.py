@@ -98,3 +98,27 @@ def test_richset_search_all() -> None:
         (1, Something(2, "two")),
         (2, Something(3, "three")),
     ]
+
+
+def test_richset_contains() -> None:
+    rs = RichSet.from_list(
+        [
+            Something(1, "one"),
+            Something(2, "two"),
+        ]
+    )
+    assert rs.contains(lambda x: x.id == 1)
+    assert rs.contains(lambda x: x.id == 2)
+    assert not rs.contains(lambda x: x.id == 3)
+
+
+def test_richset_has() -> None:
+    rs = RichSet.from_list(
+        [
+            Something(1, "one"),
+            Something(2, "two"),
+        ]
+    )
+    assert rs.has(Something(1, "one"))
+    assert rs.has(Something(2, "two"))
+    assert not rs.has(Something(3, "three"))

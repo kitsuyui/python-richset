@@ -112,6 +112,8 @@ richset.indices(lambda s: s.id == 2)  # => [1]
 richset.search_first(lambda s: s.id == 2)  # => Something(2, 'two')
 richset.search_last(lambda s: s.id == 2)  # => Something(2, 'two')
 richset.search_all(lambda s: s.id == 2)  # => [Something(2, 'two')]
+richset.contains(lambda s: s.id == 2)  # => True
+richset.has(Something(2, 'two'))  # => True
 ```
 
 ### Sorts
@@ -138,16 +140,23 @@ richset = RichSet.from_list([
     Something(4, 'four'),
     Something(5, 'five'),
 ])
+richset2 = RichSet.from_list([
+    Something(3, 'three'),
+    Something(4, 'four'),
+    Something(6, 'six'),
+])
 ```
 
 ```python
-richset.union(richset2).to_set()  # => {Something(1, 'one'), Something(2, 'two'), Something(3, 'three'), Something(4, 'four'), Something(5, 'five')}
-richset.intersection(richset2).to_set()  # => {Something(3, 'three')}
-richset.difference(richset2).to_set()  # => {Something(1, 'one'), Something(2, 'two')}
-richset.symmetric_difference(richset2).to_set()  # => {Something(1, 'one'), Something(2, 'two'), Something(4, 'four'), Something(5, 'five')}
+richset.union(richset2).to_set()  # => {Something(3, 'three'), Something(4, 'four'), Something(5, 'five'), Something(6, 'six')}
+richset.intersection(richset2).to_set()  # => {Something(3, 'three'), Something(4, 'four')}
+richset.difference(richset2).to_set()  # => {Something(5, 'five')}
+richset.symmetric_difference(richset2).to_set()  # => {Something(5, 'five'), Something(6, 'six')}
+richset.cartesian_product(richset2).to_set()  # => {(Something(3, 'three'), Something(3, 'three')), (Something(3, 'three'), Something(4, 'four')), (Something(3, 'three'), Something(6, 'six')), (Something(4, 'four'), Something(3, 'three')), (Something(4, 'four'), Something(4, 'four')), (Something(4, 'four'), Something(6, 'six')), (Something(5, 'five'), Something(3, 'three')), (Something(5, 'five'), Something(4, 'four')), (Something(5, 'five'), Something(6, 'six'))}
+richset.zip(richset2).to_set()  # => {(Something(3, 'three'), Something(3, 'three')), (Something(4, 'four'), Something(4, 'four')), (Something(5, 'five'), Something(6, 'six')}
 ```
 
-Also `is_subset()`, `is_superset()`, `is_disjoint()` and `is_equal_as_set()` are available.
+Also `is_subset()`, `is_superset()`, `is_disjoint()`, `is_equal_as_set()` and `zip_longest()` are available.
 
 ### Grouping
 
@@ -156,6 +165,13 @@ richset.group_by(lambda item: item.id % 2)  # => {1: RichSet(records=(Something(
 richset.size_of_group_by(lambda item: item.id % 2)  # => {1: 2, 0: 1}
 richset.count_of_group_by(key=lambda item: item.id % 2, predicate=lambda item: item.name.startswith('t'))  # => {1: 1, 0: 1}
 richset.aggregate_by(key=lambda r: r.id % 2, fn=lambda a, b: a + b.name, initial='')  # => {1: 'onethree', 0: 'two'}
+```
+
+## Paging
+
+```python
+richset.page(1, 2).to_list()  # => [Something(1, 'one'), Something(2, 'two')]
+richset.split_into_pages(2).to_list()  # => [RichSet([Something(1, 'one'), Something(2, 'two')]), RichSet([Something(3, 'three')])]
 ```
 
 # LICENSE
