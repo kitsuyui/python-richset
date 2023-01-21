@@ -1,4 +1,11 @@
-from typing import Protocol, TypeVar, Union
+import sys
+
+if sys.version_info >= (3, 8):
+    from typing import Protocol
+else:
+    from typing_extensions import Protocol
+
+from typing import TypeVar, Union
 
 T_contra = TypeVar("T_contra", contravariant=True)
 
