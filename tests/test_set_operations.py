@@ -9,6 +9,12 @@ class Something:
     name: str
 
 
+@dataclass(frozen=True)
+class Foo:
+    id: int
+    name: str
+
+
 def test_richset_union() -> None:
     rs1 = RichSet.from_list(
         [
@@ -190,3 +196,49 @@ def test_richset_is_equal_as_set() -> None:
     assert not rs1.is_equal_as_set(RichSet[Something].from_empty())
     assert not rs2.is_equal_as_set(RichSet[Something].from_empty())
     assert not rs3.is_equal_as_set(RichSet[Something].from_empty())
+
+
+def test_richset_cartesian_product() -> None:
+    rs1 = RichSet.from_list(
+        [
+            Something(1, "one"),
+            Something(2, "two"),
+        ]
+    )
+    rs2 = RichSet.from_list(
+        [
+            Foo(3, "three"),
+            Foo(4, "four"),
+        ]
+    )
+    assert rs1.cartesian_product(rs2).to_set() == {
+        (Something(1, "one"), Foo(3, "three")),
+        (Something(1, "one"), Foo(4, "four")),
+        (Something(2, "two"), Foo(3, "three")),
+        (Something(2, "two"), Foo(4, "four")),
+    }
+
+
+def test_richset_zip() -> None:
+    rs1 = RichSet.from_list(
+        [
+            Something(1, "one"),
+            Something(2, "two"),
+        ]
+    )
+    rs2 = RichSet.from_list(
+        [
+            Foo(3, "three"),
+            Foo(4, "four"),
+            Foo(5, "five"),
+        ]
+    )
+    assert rs1.zip(rs2).to_set() == {
+        (Something(1, "one"), Foo(3, "three")),
+        (Something(2, "two"), Foo(4, "four")),
+    }
+    assert rs1.zip_longest(rs2).to_set() == {
+        (Something(1, "one"), Foo(3, "three")),
+        (Something(2, "two"), Foo(4, "four")),
+        (None, Foo(5, "five")),
+    }

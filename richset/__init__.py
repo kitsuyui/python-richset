@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import functools
+import itertools
 from dataclasses import dataclass
 from typing import (
     Callable,
@@ -18,6 +19,7 @@ from .comparable import Comparable
 T = TypeVar("T")
 S = TypeVar("S")
 Key = TypeVar("Key", bound=Hashable)
+Fill = TypeVar("Fill")
 OnDuplicateActions = Literal["error", "first", "last"]
 
 
@@ -412,6 +414,48 @@ symmetric difference of the records."""
     def is_equal_as_set(self, other: RichSet[T]) -> bool:
         """Returns True if self and other are same set."""
         return set(self.records) == set(other.records)
+
+    def cartesian_product(self, other: RichSet[S]) -> RichSet[tuple[T, S]]:
+        """Returns a new RichSet with the cartesian product of the records."""
+        return RichSet.from_list(
+            [(r1, r2) for r1 in self.records for r2 in other.records]
+        )
+
+    def zip(self, other: RichSet[S]) -> RichSet[tuple[T, S]]:
+        """Returns a new RichSet with the zip of the records.
+
+        This performs like the zip() function in Python."""
+        return RichSet.from_list(list(zip(self.records, other.records)))
+
+    @overload
+    def zip_longest(
+        self, other: RichSet[S], *, fillvalue: Fill
+    ) -> RichSet[tuple[T | Fill, S | Fill]]:
+        ...
+
+    @overload
+    def zip_longest(
+        self, other: RichSet[S]
+    ) -> RichSet[tuple[T | None, S | None]]:
+        ...
+
+    def zip_longest(
+        self, other: RichSet[S], *, fillvalue: Fill | None = None
+    ) -> RichSet[tuple[T | Fill, S | Fill]]:
+        """Returns a new RichSet with the zip_longest of the records.
+
+        This performs like the zip_longest() function in Python."""
+        if fillvalue is not None:
+            return RichSet.from_list(
+                list(
+                    itertools.zip_longest(
+                        self.records, other.records, fillvalue=fillvalue
+                    )
+                )
+            )
+        return RichSet.from_list(
+            list(itertools.zip_longest(self.records, other.records))
+        )
 
     # sortings
 

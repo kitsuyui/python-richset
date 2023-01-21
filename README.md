@@ -140,16 +140,23 @@ richset = RichSet.from_list([
     Something(4, 'four'),
     Something(5, 'five'),
 ])
+richset2 = RichSet.from_list([
+    Something(3, 'three'),
+    Something(4, 'four'),
+    Something(6, 'six'),
+])
 ```
 
 ```python
-richset.union(richset2).to_set()  # => {Something(1, 'one'), Something(2, 'two'), Something(3, 'three'), Something(4, 'four'), Something(5, 'five')}
-richset.intersection(richset2).to_set()  # => {Something(3, 'three')}
-richset.difference(richset2).to_set()  # => {Something(1, 'one'), Something(2, 'two')}
-richset.symmetric_difference(richset2).to_set()  # => {Something(1, 'one'), Something(2, 'two'), Something(4, 'four'), Something(5, 'five')}
+richset.union(richset2).to_set()  # => {Something(3, 'three'), Something(4, 'four'), Something(5, 'five'), Something(6, 'six')}
+richset.intersection(richset2).to_set()  # => {Something(3, 'three'), Something(4, 'four')}
+richset.difference(richset2).to_set()  # => {Something(5, 'five')}
+richset.symmetric_difference(richset2).to_set()  # => {Something(5, 'five'), Something(6, 'six')}
+richset.cartesian_product(richset2).to_set()  # => {(Something(3, 'three'), Something(3, 'three')), (Something(3, 'three'), Something(4, 'four')), (Something(3, 'three'), Something(6, 'six')), (Something(4, 'four'), Something(3, 'three')), (Something(4, 'four'), Something(4, 'four')), (Something(4, 'four'), Something(6, 'six')), (Something(5, 'five'), Something(3, 'three')), (Something(5, 'five'), Something(4, 'four')), (Something(5, 'five'), Something(6, 'six'))}
+richset.zip(richset2).to_set()  # => {(Something(3, 'three'), Something(3, 'three')), (Something(4, 'four'), Something(4, 'four')), (Something(5, 'five'), Something(6, 'six')}
 ```
 
-Also `is_subset()`, `is_superset()`, `is_disjoint()` and `is_equal_as_set()` are available.
+Also `is_subset()`, `is_superset()`, `is_disjoint()`, `is_equal_as_set()` and `zip_longest()` are available.
 
 ### Grouping
 
