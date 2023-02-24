@@ -49,31 +49,14 @@ jobs:
         run: poetry run poe test
 
       - name: Coverage
-        run: |
-          poetry run poe coverage-xml
-          mv coverage.xml coverage-${{ matrix.python }}.xml
-
-      - name: Upload coverage
-        uses: actions/upload-artifact@v3
-        with:
-          name: coverage
-          path: coverage-${{ matrix.python }}.xml
-
-  send-coverage:
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download coverage
-        uses: actions/download-artifact@v3
-        with:
-          name: coverage
-          path: coverage-*.xml
+        run: poetry run poe coverage-xml
 
       - name: Upload coverage report to Codecov
+        if: matrix.python == '3.11'
         uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: coverage-*.xml
+          files: ./coverage.xml
           flags: unittests
           name: codecov-umbrella
           fail_ci_if_error: true
