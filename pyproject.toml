@@ -37,7 +37,7 @@ build-backend = "setuptools.build_meta"
 
 [tool.poe.tasks]
 test = "pytest"
-coverage-xml = "pytest --cov=richset --doctest-modules --cov-report=xml"
+coverage = "pytest --cov=richset --doctest-modules"
 format = [
     { cmd = "isort richset"},
     { cmd = "black richset"},

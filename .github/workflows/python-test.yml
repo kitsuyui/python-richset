@@ -50,30 +50,48 @@ jobs:
 
       - name: Coverage
         run: |
-          poetry run poe coverage-xml
-          mv coverage.xml coverage-${{ matrix.python }}.xml
+          poetry run poe coverage
+          mv .coverage .coverage.${{ matrix.python }}
 
       - name: Upload coverage
         uses: actions/upload-artifact@v3
         with:
           name: coverage
-          path: coverage-${{ matrix.python }}.xml
+          path: .coverage.${{ matrix.python }}
 
   send-coverage:
     needs: test
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        id: setup-python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Set up poetry
+        uses: abatilo/actions-poetry@v2
+
+      - name: Install dependencies
+        run: poetry install
+
       - name: Download coverage
         uses: actions/download-artifact@v3
         with:
           name: coverage
-          path: coverage-*.xml
+          path: coverage
+
+      - name: Merge coverage
+        run: poetry run poe coverage combine coverage
 
       - name: Upload coverage report to Codecov
         uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: coverage-*.xml
+          files: .coverage
           flags: unittests
           name: codecov-umbrella
           fail_ci_if_error: true
