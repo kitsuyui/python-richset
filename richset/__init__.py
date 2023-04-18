@@ -462,7 +462,7 @@ symmetric difference of the records."""
             list(itertools.zip_longest(self.records, other.records))
         )
 
-    # sortings
+    # sorting
 
     def sorted(
         self,
