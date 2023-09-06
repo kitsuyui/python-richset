@@ -15,7 +15,7 @@ packages = [
 write_to = "richset/_version.py"
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.8"
 
 [tool.poetry.group.dev.dependencies]
 black = "*"
@@ -41,7 +41,7 @@ coverage-xml = "pytest --cov=richset --doctest-modules --cov-report=xml"
 format = [
     { cmd = "isort richset"},
     { cmd = "black richset"},
-    { cmd = "pyupgrade --py37-plus richset/*.py"},
+    { cmd = "pyupgrade --py38-plus richset/*.py"},
 ]
 check = [
     { cmd = "isort --check-only --diff richset"},
