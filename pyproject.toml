@@ -18,13 +18,9 @@ write_to = "richset/_version.py"
 python = "^3.8"
 
 [tool.poetry.group.dev.dependencies]
-black = "*"
+ruff = "*"
 pytest = "*"
-isort = "*"
-pyupgrade = "*"
 pytest-cov = "*"
-flake8 = "*"
-mypy = "*"
 poethepoet = "*"
 setuptools-scm = "*"
 build = "*"
@@ -38,17 +34,8 @@ build-backend = "setuptools.build_meta"
 [tool.poe.tasks]
 test = "pytest"
 coverage-xml = "pytest --cov=richset --doctest-modules --cov-report=xml"
-format = [
-    { cmd = "isort richset"},
-    { cmd = "black richset"},
-    { cmd = "pyupgrade --py38-plus richset/*.py"},
-]
-check = [
-    { cmd = "isort --check-only --diff richset"},
-    { cmd = "black --check --diff richset"},
-    { cmd = "flake8 richset"},
-    { cmd = "mypy richset"},
-]
+format = "ruff format richset"
+check = "ruff check richset"
 build = [
     { cmd = "python -m build"}
 ]
@@ -67,12 +54,5 @@ no_implicit_optional = true
 warn_unused_ignores = true
 warn_return_any = true
 
-[tool.isort]
-multi_line_output = 3
-include_trailing_comma = true
-
-[tool.black]
+[tool.ruff]
 line-length = 79
-
-[tool.flake8]
-max-line-length = 79
