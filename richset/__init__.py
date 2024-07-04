@@ -467,7 +467,7 @@ symmetric difference of the records."""
     def sorted(
         self,
         *,
-        key: Callable[[T], Comparable],
+        key: Callable[[T], Comparable[S]],
         reverse: bool = False,
     ) -> RichSet[T]:
         """Returns a new RichSet sorted bythe given key."""

@@ -24,6 +24,7 @@ pytest-cov = "*"
 poethepoet = "*"
 setuptools-scm = "*"
 build = "*"
+mypy = "*"
 
 [build-system]
 requires = [
@@ -35,24 +36,18 @@ build-backend = "setuptools.build_meta"
 test = "pytest"
 coverage-xml = "pytest --cov=richset --doctest-modules --cov-report=xml"
 format = "ruff format richset"
-check = "ruff check richset"
+check = [
+    { cmd = "ruff check richset tests" },
+    { cmd = "mypy richset tests" },
+]
 build = [
     { cmd = "python -m build"}
 ]
 
 [tool.mypy]
 # https://mypy.readthedocs.io/en/latest/config_file.html
-ignore_missing_imports = true
-disallow_any_decorated = true
-disallow_subclassing_any = true
-disallow_untyped_calls = true
-disallow_untyped_defs = true
-disallow_incomplete_defs = true
-check_untyped_defs = true
-disallow_untyped_decorators = true
-no_implicit_optional = true
-warn_unused_ignores = true
-warn_return_any = true
+strict = true
+ignore_missing_imports = false
 
 [tool.ruff]
 line-length = 79
