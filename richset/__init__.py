@@ -138,12 +138,10 @@ there are multiple records with the same key.
     # list accessors
 
     @overload
-    def get_first(self) -> T | None:
-        ...
+    def get_first(self) -> T | None: ...
 
     @overload
-    def get_first(self, default: S) -> T | S:
-        ...
+    def get_first(self, default: S) -> T | S: ...
 
     def get_first(self, default: S | None = None) -> T | S | None:
         """Returns the first record in the RichSet
@@ -159,12 +157,10 @@ there are multiple records with the same key.
         raise IndexError("RichSet is empty")
 
     @overload
-    def get_last(self) -> T | None:
-        ...
+    def get_last(self) -> T | None: ...
 
     @overload
-    def get_last(self, default: S) -> T | S:
-        ...
+    def get_last(self, default: S) -> T | S: ...
 
     def get_last(self, default: S | None = None) -> T | S | None:
         """Returns the last record in the RichSet
@@ -186,12 +182,10 @@ there are multiple records with the same key.
         raise IndexError("index out of range")
 
     @overload
-    def get_nth(self, index: int) -> T | None:
-        ...
+    def get_nth(self, index: int) -> T | None: ...
 
     @overload
-    def get_nth(self, index: int, default: S) -> T | S:
-        ...
+    def get_nth(self, index: int, default: S) -> T | S: ...
 
     def get_nth(self, index: int, default: S | None = None) -> T | S | None:
         """Returns the record at the given index
@@ -210,12 +204,10 @@ there are multiple records with the same key.
         return self.first()
 
     @overload
-    def get_one(self) -> T | None:
-        ...
+    def get_one(self) -> T | None: ...
 
     @overload
-    def get_one(self, default: S) -> T | S:
-        ...
+    def get_one(self, default: S) -> T | S: ...
 
     def get_one(self, default: S | None = None) -> T | S | None:
         """Returns the one record in the RichSet
@@ -435,14 +427,12 @@ symmetric difference of the records."""
     @overload
     def zip_longest(
         self, other: RichSet[S], *, fillvalue: Fill
-    ) -> RichSet[tuple[T | Fill, S | Fill]]:
-        ...
+    ) -> RichSet[tuple[T | Fill, S | Fill]]: ...
 
     @overload
     def zip_longest(
         self, other: RichSet[S]
-    ) -> RichSet[tuple[T | None, S | None]]:
-        ...
+    ) -> RichSet[tuple[T | None, S | None]]: ...
 
     def zip_longest(
         self, other: RichSet[S], *, fillvalue: Fill | None = None
