@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import functools
 import itertools
-import sys
 from dataclasses import dataclass
 from typing import (
     Callable,
@@ -14,12 +13,12 @@ from typing import (
     overload,
 )
 
-if sys.version_info >= (3, 8):
-    from typing import Literal
-else:
-    from typing_extensions import Literal  # pragma: no cover
+from typing import Literal
 
 from .comparable import Comparable
+
+# https://packaging-guide.openastronomy.org/en/latest/advanced/versioning.html
+from ._version import __version__
 
 T = TypeVar("T")
 S = TypeVar("S")
@@ -546,3 +545,6 @@ split into pages (limit)."""
             self.page(offset=offset, limit=size)
             for offset in range(0, self.size(), size)
         ]
+
+
+__all__ = ["RichSet", "__version__"]
