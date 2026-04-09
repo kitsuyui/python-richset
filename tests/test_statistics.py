@@ -29,15 +29,15 @@ def test_richset_size() -> None:
             [
                 Something(1, "one"),
                 Something(2, "two"),
-            ]
+            ],
         ).size()
         == 2
     )
 
 
 def test_richset_count() -> None:
-    assert RichSet.from_list([]).count(lambda r: True) == 0
-    assert RichSet.from_list([]).count(lambda r: False) == 0
+    assert RichSet.from_list([]).count(lambda _: True) == 0
+    assert RichSet.from_list([]).count(lambda _: False) == 0
     rs = RichSet.from_list([Something(1, "one"), Something(2, "two")])
     assert rs.count(lambda r: r.id == 1) == 1
     assert rs.count(lambda r: r.id > 0) == 2
@@ -47,7 +47,7 @@ def test_richset_count() -> None:
                 Something(1, "one"),
                 Something(2, "two"),
                 Something(3, "three"),
-            ]
+            ],
         ).count(lambda r: r.id % 2 == 0)
         == 1
     )

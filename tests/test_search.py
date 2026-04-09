@@ -17,7 +17,7 @@ def test_richset_index_of() -> None:
             Something(3, "three"),
             Something(4, "four"),
             Something(5, "five"),
-        ]
+        ],
     )
     assert rs.index_of(lambda r: r.id == 1) == 0
     assert rs.index_of(lambda r: r.id == 2) == 1
@@ -46,7 +46,7 @@ def test_richset_indices() -> None:
         [
             Something(1, "one"),
             Something(2, "two"),
-        ]
+        ],
     )
     assert rs.indices_of(lambda r: r.id == 1) == [0]
     assert rs.indices_of(lambda r: r.id == 2) == [1]
@@ -59,7 +59,7 @@ def test_richset_search_first() -> None:
             Something(1, "one"),
             Something(2, "two"),
             Something(3, "three"),
-        ]
+        ],
     )
     assert rs.search_first(lambda r: r.id == 0) == (-1, None)
     assert rs.search_first(lambda r: r.id == 1) == (0, Something(1, "one"))
@@ -74,7 +74,7 @@ def test_richset_search_last() -> None:
             Something(1, "one"),
             Something(2, "two"),
             Something(3, "three"),
-        ]
+        ],
     )
     assert rs.search_last(lambda r: r.id == 0) == (-1, None)
     assert rs.search_last(lambda r: r.id == 1) == (0, Something(1, "one"))
@@ -89,7 +89,7 @@ def test_richset_search_all() -> None:
             Something(1, "one"),
             Something(2, "two"),
             Something(3, "three"),
-        ]
+        ],
     )
     assert rs.search_all(lambda r: r.id == 0) == []
     assert rs.search_all(lambda r: r.id == 1) == [(0, Something(1, "one"))]
@@ -105,7 +105,7 @@ def test_richset_contains() -> None:
         [
             Something(1, "one"),
             Something(2, "two"),
-        ]
+        ],
     )
     assert rs.contains(lambda x: x.id == 1)
     assert rs.contains(lambda x: x.id == 2)
@@ -117,7 +117,7 @@ def test_richset_has() -> None:
         [
             Something(1, "one"),
             Something(2, "two"),
-        ]
+        ],
     )
     assert rs.has(Something(1, "one"))
     assert rs.has(Something(2, "two"))

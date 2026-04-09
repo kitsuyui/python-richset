@@ -15,7 +15,7 @@ def test_richset_sorted() -> None:
             Something(1, "one"),
             Something(3, "three"),
             Something(2, "two"),
-        ]
+        ],
     )
     assert rs.sorted(key=lambda r: r.id).to_list() == [
         Something(1, "one"),
@@ -42,7 +42,7 @@ def test_richset_reversed() -> None:
             Something(1, "one"),
             Something(3, "three"),
             Something(2, "two"),
-        ]
+        ],
     )
     assert rs.reversed().to_list() == [
         Something(2, "two"),

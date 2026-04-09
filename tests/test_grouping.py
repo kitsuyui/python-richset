@@ -15,13 +15,13 @@ def test_richset_group_by() -> None:
             Something(1, "one"),
             Something(2, "two"),
             Something(3, "three"),
-        ]
+        ],
     )
     assert rs.group_by(lambda r: r.id % 2)[0] == RichSet.from_list(
-        [Something(2, "two")]
+        [Something(2, "two")],
     )
     assert rs.group_by(lambda r: r.id % 2)[1] == RichSet.from_list(
-        [Something(1, "one"), Something(3, "three")]
+        [Something(1, "one"), Something(3, "three")],
     )
 
 
@@ -31,7 +31,7 @@ def test_richtest_size_of_group_by() -> None:
             Something(1, "one"),
             Something(2, "two"),
             Something(3, "three"),
-        ]
+        ],
     )
     assert rs.size_of_group_by(lambda r: r.id % 2)[0] == 1
     assert rs.size_of_group_by(lambda r: r.id % 2)[1] == 2
@@ -43,7 +43,7 @@ def test_richset_count_of_group_by() -> None:
             Something(1, "one"),
             Something(2, "two"),
             Something(3, "three"),
-        ]
+        ],
     )
     assert (
         rs.count_of_group_by(
@@ -81,10 +81,10 @@ def test_richset_aggregate_by() -> None:
             Something(1, "one"),
             Something(2, "two"),
             Something(3, "three"),
-        ]
+        ],
     )
     assert rs.aggregate_by(
-        key=lambda r: r.id % 2, fn=lambda a, b: a + b.name, initial=""
+        key=lambda r: r.id % 2, fn=lambda a, b: a + b.name, initial="",
     ) == {
         0: "two",
         1: "onethree",

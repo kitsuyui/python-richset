@@ -16,7 +16,7 @@ def test_richset_get_first() -> None:
         [
             Something(1, "one"),
             Something(2, "two"),
-        ]
+        ],
     )
     assert rs.get_first() == Something(1, "one")
     assert rs.get_first(Something(-1, "default")) == Something(1, "one")
@@ -30,7 +30,7 @@ def test_richset_first() -> None:
         [
             Something(1, "one"),
             Something(2, "two"),
-        ]
+        ],
     )
     assert rs.first() == Something(1, "one")
 
@@ -43,7 +43,7 @@ def test_richset_get_last() -> None:
         [
             Something(1, "one"),
             Something(2, "two"),
-        ]
+        ],
     )
     assert rs.get_last() == Something(2, "two")
     assert rs.get_last(Something(-1, "default")) == Something(2, "two")
@@ -57,7 +57,7 @@ def test_richset_last() -> None:
         [
             Something(1, "one"),
             Something(2, "two"),
-        ]
+        ],
     )
     assert rs.last() == Something(2, "two")
 
@@ -70,7 +70,7 @@ def test_richset_nth() -> None:
         [
             Something(1, "one"),
             Something(2, "two"),
-        ]
+        ],
     )
     assert rs.nth(0) == Something(1, "one")
     assert rs.nth(1) == Something(2, "two")
@@ -86,7 +86,7 @@ def test_richset_get_nth() -> None:
         [
             Something(1, "one"),
             Something(2, "two"),
-        ]
+        ],
     )
     assert rs.get_nth(0) == Something(1, "one")
     assert rs.get_nth(1) == Something(2, "two")
@@ -101,7 +101,7 @@ def test_richset_one() -> None:
         [
             Something(1, "one"),
             Something(2, "two"),
-        ]
+        ],
     )
     assert rs.one() == Something(1, "one")
     with pytest.raises(IndexError) as err:
@@ -114,7 +114,7 @@ def test_richset_get_one() -> None:
         [
             Something(1, "one"),
             Something(2, "two"),
-        ]
+        ],
     )
     assert rs.get_one() == Something(1, "one")
     assert rs.get_one(Something(-1, "default")) == Something(1, "one")

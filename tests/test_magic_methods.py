@@ -14,7 +14,7 @@ def test_richset_iter() -> None:
         [
             Something(1, "one"),
             Something(2, "two"),
-        ]
+        ],
     )
     for i, r in enumerate(rs):
         if i == 0:
@@ -28,7 +28,7 @@ def test_richset_len() -> None:
         [
             Something(1, "one"),
             Something(2, "two"),
-        ]
+        ],
     )
     assert len(rs) == 2
     assert len(RichSet[str].from_empty()) == 0

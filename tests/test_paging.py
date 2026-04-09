@@ -17,7 +17,7 @@ def test_richset_page() -> None:
             Something(3, "three"),
             Something(4, "four"),
             Something(5, "five"),
-        ]
+        ],
     )
     assert rs.page(0, 2).to_list() == [
         Something(1, "one"),
@@ -48,25 +48,25 @@ def test_richset_split_into_pages() -> None:
             Something(3, "three"),
             Something(4, "four"),
             Something(5, "five"),
-        ]
+        ],
     )
     assert rs.split_into_pages(2) == [
         RichSet.from_list(
             [
                 Something(1, "one"),
                 Something(2, "two"),
-            ]
+            ],
         ),
         RichSet.from_list(
             [
                 Something(3, "three"),
                 Something(4, "four"),
-            ]
+            ],
         ),
         RichSet.from_list(
             [
                 Something(5, "five"),
-            ]
+            ],
         ),
     ]
     assert rs.split_into_pages(3) == [
@@ -75,13 +75,13 @@ def test_richset_split_into_pages() -> None:
                 Something(1, "one"),
                 Something(2, "two"),
                 Something(3, "three"),
-            ]
+            ],
         ),
         RichSet.from_list(
             [
                 Something(4, "four"),
                 Something(5, "five"),
-            ]
+            ],
         ),
     ]
     assert rs.split_into_pages(4) == [
@@ -91,12 +91,12 @@ def test_richset_split_into_pages() -> None:
                 Something(2, "two"),
                 Something(3, "three"),
                 Something(4, "four"),
-            ]
+            ],
         ),
         RichSet.from_list(
             [
                 Something(5, "five"),
-            ]
+            ],
         ),
     ]
     assert rs.split_into_pages(5) == [
@@ -107,7 +107,7 @@ def test_richset_split_into_pages() -> None:
                 Something(3, "three"),
                 Something(4, "four"),
                 Something(5, "five"),
-            ]
+            ],
         ),
     ]
     assert rs.split_into_pages(6) == [
@@ -118,6 +118,6 @@ def test_richset_split_into_pages() -> None:
                 Something(3, "three"),
                 Something(4, "four"),
                 Something(5, "five"),
-            ]
+            ],
         ),
     ]
