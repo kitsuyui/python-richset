@@ -2,23 +2,18 @@ from __future__ import annotations
 
 import functools
 import itertools
+from collections.abc import Callable, Hashable, Iterable, Iterator
 from dataclasses import dataclass
 from typing import (
-    Callable,
     Generic,
-    Hashable,
-    Iterable,
-    Iterator,
+    Literal,
     TypeVar,
     overload,
 )
 
-from typing import Literal
-
-from .comparable import Comparable
-
 # https://packaging-guide.openastronomy.org/en/latest/advanced/versioning.html
 from ._version import __version__
+from .comparable import Comparable
 
 T = TypeVar("T")
 S = TypeVar("S")
@@ -114,12 +109,11 @@ there are multiple records with the same key.
             if len(base) != self.size():
                 raise ValueError("duplicate keys")
             return {k: v[0] for k, v in base.items()}
-        elif duplicated == "first":
+        if duplicated == "first":
             return {k: v[0] for k, v in base.items()}
-        elif duplicated == "last":
+        if duplicated == "last":
             return {k: v[-1] for k, v in base.items()}
-        else:
-            return {k: duplicated(v) for k, v in base.items()}
+        return {k: duplicated(v) for k, v in base.items()}
 
     def to_dict_of_list(
         self,
@@ -259,7 +253,7 @@ there are multiple records with the same key.
 
     def pushed(self, record: T) -> RichSet[T]:
         """Returns a new RichSet with the given record pushed to the end."""
-        return RichSet.from_tuple(self.records + (record,))
+        return RichSet.from_tuple((*self.records, record))
 
     def pushed_all(self, records: Iterable[T]) -> RichSet[T]:
         """Returns a new RichSet with the given records pushed to the end."""
@@ -268,7 +262,7 @@ there are multiple records with the same key.
     def unshifted(self, record: T) -> RichSet[T]:
         """Returns a new RichSet with the given record \
 unshifted to the beginning."""
-        return RichSet.from_tuple((record,) + self.records)
+        return RichSet.from_tuple((record, *self.records))
 
     def unshifted_all(self, records: Iterable[T]) -> RichSet[T]:
         """Returns a new RichSet with the given records \
@@ -414,27 +408,29 @@ symmetric difference of the records."""
     def cartesian_product(self, other: RichSet[S]) -> RichSet[tuple[T, S]]:
         """Returns a new RichSet with the cartesian product of the records."""
         return RichSet.from_list(
-            [(r1, r2) for r1 in self.records for r2 in other.records]
+            [(r1, r2) for r1 in self.records for r2 in other.records],
         )
 
     def zip(self, other: RichSet[S]) -> RichSet[tuple[T, S]]:
         """Returns a new RichSet with the zip of the records.
 
         This performs like the zip() function in Python."""
-        return RichSet.from_list(list(zip(self.records, other.records)))
+        return RichSet.from_list(
+            list(zip(self.records, other.records, strict=False)),
+        )
 
     @overload
     def zip_longest(
-        self, other: RichSet[S], *, fillvalue: Fill
+        self, other: RichSet[S], *, fillvalue: Fill,
     ) -> RichSet[tuple[T | Fill, S | Fill]]: ...
 
     @overload
     def zip_longest(
-        self, other: RichSet[S]
+        self, other: RichSet[S],
     ) -> RichSet[tuple[T | None, S | None]]: ...
 
     def zip_longest(
-        self, other: RichSet[S], *, fillvalue: Fill | None = None
+        self, other: RichSet[S], *, fillvalue: Fill | None = None,
     ) -> RichSet[tuple[T | Fill, S | Fill]]:
         """Returns a new RichSet with the zip_longest of the records.
 
@@ -443,12 +439,12 @@ symmetric difference of the records."""
             return RichSet.from_list(
                 list(
                     itertools.zip_longest(
-                        self.records, other.records, fillvalue=fillvalue
-                    )
-                )
+                        self.records, other.records, fillvalue=fillvalue,
+                    ),
+                ),
             )
         return RichSet.from_list(
-            list(itertools.zip_longest(self.records, other.records))
+            list(itertools.zip_longest(self.records, other.records)),
         )
 
     # sorting
@@ -505,7 +501,7 @@ symmetric difference of the records."""
         return {k: v.size() for k, v in self.group_by(key).items()}
 
     def count_of_group_by(
-        self, *, key: Callable[[T], Key], predicate: Callable[[T], bool]
+        self, *, key: Callable[[T], Key], predicate: Callable[[T], bool],
     ) -> dict[Key, int]:
         """Returns a dict of the number of records satisfying \
 the predicate grouped by the given key."""

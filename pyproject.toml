@@ -74,3 +74,35 @@ ignore_missing_imports = false
 
 [tool.ruff]
 line-length = 79
+
+[tool.ruff.lint]
+select = [
+    "A",
+    "ANN",
+    "ARG",
+    "B",
+    "C4",
+    "C90",
+    "COM",
+    "E",
+    "F",
+    "I",
+    "PERF",
+    "PLE",
+    "PTH",
+    "RET",
+    "RUF",
+    "S",
+    "SIM",
+    "SLOT",
+    "UP",
+    "W",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = [
+    "ANN",
+    "ARG005",
+    "D",
+    "S101",
+]

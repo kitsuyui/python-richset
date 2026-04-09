@@ -17,7 +17,7 @@ def test_richset_pushed() -> None:
             Something(1, "one"),
             Something(2, "two"),
             Something(3, "three"),
-        ]
+        ],
     )
     assert rs.pushed(Something(4, "four")).to_list() == [
         Something(1, "one"),
@@ -33,7 +33,7 @@ def test_richset_pushed_all() -> None:
             Something(1, "one"),
             Something(2, "two"),
             Something(3, "three"),
-        ]
+        ],
     )
     assert rs.pushed_all([]).to_list() == [
         Something(1, "one"),
@@ -45,7 +45,7 @@ def test_richset_pushed_all() -> None:
         [
             Something(4, "four"),
             Something(5, "five"),
-        ]
+        ],
     ).to_list() == [
         Something(1, "one"),
         Something(2, "two"),
@@ -61,7 +61,7 @@ def test_richset_unshifted() -> None:
             Something(1, "one"),
             Something(2, "two"),
             Something(3, "three"),
-        ]
+        ],
     )
     assert rs.unshifted(Something(4, "four")).to_list() == [
         Something(4, "four"),
@@ -77,7 +77,7 @@ def test_richset_unshifted_all() -> None:
             Something(1, "one"),
             Something(2, "two"),
             Something(3, "three"),
-        ]
+        ],
     )
     assert rs.unshifted_all([]).to_list() == [
         Something(1, "one"),
@@ -89,7 +89,7 @@ def test_richset_unshifted_all() -> None:
         [
             Something(4, "four"),
             Something(5, "five"),
-        ]
+        ],
     ).to_list() == [
         Something(4, "four"),
         Something(5, "five"),
@@ -105,7 +105,7 @@ def test_richset_popped() -> None:
             Something(1, "one"),
             Something(2, "two"),
             Something(3, "three"),
-        ]
+        ],
     )
 
     item, rs2 = rs.popped()
@@ -127,7 +127,7 @@ def test_richset_popped_n() -> None:
             Something(1, "one"),
             Something(2, "two"),
             Something(3, "three"),
-        ]
+        ],
     )
 
     popped_items, rs2 = rs.popped_n(2)
@@ -154,7 +154,7 @@ def test_richset_shifted() -> None:
             Something(1, "one"),
             Something(2, "two"),
             Something(3, "three"),
-        ]
+        ],
     )
 
     item, rs2 = rs.shifted()
@@ -176,7 +176,7 @@ def test_richset_shifted_n() -> None:
             Something(1, "one"),
             Something(2, "two"),
             Something(3, "three"),
-        ]
+        ],
     )
 
     shifted_items, rs2 = rs.shifted_n(2)
@@ -203,7 +203,7 @@ def test_richset_slice() -> None:
             Something(1, "one"),
             Something(2, "two"),
             Something(3, "three"),
-        ]
+        ],
     )
     assert rs.slice(0, 0).to_list() == []
     assert rs.slice(1, 2).to_list() == [Something(2, "two")]
@@ -222,7 +222,7 @@ def test_richset_divide_at() -> None:
             Something(1, "one"),
             Something(2, "two"),
             Something(3, "three"),
-        ]
+        ],
     )
     rs2, rs3 = rs.divide_at(0)
     assert rs2.to_list() == []

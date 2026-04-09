@@ -28,7 +28,7 @@ def test_richset_from_list() -> None:
         [
             Something(1, "one"),
             Something(2, "two"),
-        ]
+        ],
     )
     assert rs == RichSet.from_list([Something(1, "one"), Something(2, "two")])
 
@@ -38,7 +38,7 @@ def test_richset_to_list() -> None:
         [
             Something(1, "one"),
             Something(2, "two"),
-        ]
+        ],
     )
     assert rs.to_list() == [Something(1, "one"), Something(2, "two")]
 
@@ -48,7 +48,7 @@ def test_richset_from_tuple() -> None:
         (
             Something(1, "one"),
             Something(2, "two"),
-        )
+        ),
     )
     assert rs.to_list() == [Something(1, "one"), Something(2, "two")]
 
@@ -58,7 +58,7 @@ def test_richset_to_tuple() -> None:
         [
             Something(1, "one"),
             Something(2, "two"),
-        ]
+        ],
     )
     assert rs.to_tuple() == (Something(1, "one"), Something(2, "two"))
 
@@ -68,7 +68,7 @@ def test_richset_from_set() -> None:
         {
             Something(1, "one"),
             Something(2, "two"),
-        }
+        },
     )
     assert rs.to_set() == {Something(1, "one"), Something(2, "two")}
 
@@ -79,8 +79,8 @@ def test_richset_from_frozenset() -> None:
             {
                 Something(1, "one"),
                 Something(2, "two"),
-            }
-        )
+            },
+        ),
     )
     assert rs.to_set() == {Something(1, "one"), Something(2, "two")}
 
@@ -90,7 +90,7 @@ def test_richset_to_set() -> None:
         [
             Something(1, "one"),
             Something(2, "two"),
-        ]
+        ],
     )
     assert rs.to_set() == {Something(1, "one"), Something(2, "two")}
     assert RichSet[Something].from_empty().to_set() == set({})
@@ -99,7 +99,7 @@ def test_richset_to_set() -> None:
         [
             SomethingElse(1, "one"),
             SomethingElse(2, "two"),
-        ]
+        ],
     )
     with pytest.raises(TypeError) as err:
         rs2.to_set()
@@ -111,10 +111,10 @@ def test_richset_to_frozenset() -> None:
         [
             Something(1, "one"),
             Something(2, "two"),
-        ]
+        ],
     )
     assert rs.to_frozenset() == frozenset(
-        {Something(1, "one"), Something(2, "two")}
+        {Something(1, "one"), Something(2, "two")},
     )
     assert RichSet[Something].from_empty().to_frozenset() == set({})
 
@@ -122,7 +122,7 @@ def test_richset_to_frozenset() -> None:
         [
             SomethingElse(1, "one"),
             SomethingElse(2, "two"),
-        ]
+        ],
     )
     with pytest.raises(TypeError) as err:
         rs2.to_frozenset()
@@ -134,7 +134,7 @@ def test_richset_to_dict() -> None:
         [
             Something(1, "one"),
             Something(2, "two"),
-        ]
+        ],
     )
     assert rs.to_dict(lambda r: r.id) == {
         1: Something(1, "one"),
@@ -146,7 +146,7 @@ def test_richset_to_dict() -> None:
             Something(1, "john"),
             Something(2, "jane"),
             Something(3, "john"),  # name duplicated
-        ]
+        ],
     )
 
     with pytest.raises(ValueError) as err:
@@ -190,7 +190,7 @@ def test_richset_to_dict_of_list() -> None:
             Something(1, "john"),
             Something(2, "jane"),
             Something(3, "john"),  # name duplicated
-        ]
+        ],
     )
     assert rs.to_dict_of_list(lambda r: r.name) == {
         "john": [Something(1, "john"), Something(3, "john")],

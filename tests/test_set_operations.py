@@ -20,13 +20,13 @@ def test_richset_union() -> None:
         [
             Something(1, "one"),
             Something(2, "two"),
-        ]
+        ],
     )
     rs2 = RichSet.from_list(
         [
             Something(1, "one"),
             Something(3, "three"),
-        ]
+        ],
     )
     assert rs1.union(rs2).to_set() == {
         Something(1, "one"),
@@ -41,13 +41,13 @@ def test_richset_intersection() -> None:
         [
             Something(1, "one"),
             Something(2, "two"),
-        ]
+        ],
     )
     rs2 = RichSet.from_list(
         [
             Something(1, "one"),
             Something(3, "three"),
-        ]
+        ],
     )
     assert rs1.intersection(rs2).to_set() == {Something(1, "one")}
     assert rs1.intersection(rs2).to_set() == rs2.intersection(rs1).to_set()
@@ -58,13 +58,13 @@ def test_richset_difference() -> None:
         [
             Something(1, "one"),
             Something(2, "two"),
-        ]
+        ],
     )
     rs2 = RichSet.from_list(
         [
             Something(1, "one"),
             Something(3, "three"),
-        ]
+        ],
     )
     assert rs1.difference(rs2).to_set() == {Something(2, "two")}
     assert rs2.difference(rs1).to_set() == {Something(3, "three")}
@@ -75,13 +75,13 @@ def test_richset_symmetric_difference() -> None:
         [
             Something(1, "one"),
             Something(2, "two"),
-        ]
+        ],
     )
     rs2 = RichSet.from_list(
         [
             Something(1, "one"),
             Something(3, "three"),
-        ]
+        ],
     )
     assert rs1.symmetric_difference(rs2).to_set() == {
         Something(2, "two"),
@@ -97,13 +97,13 @@ def test_richset_is_subset() -> None:
     rs1 = RichSet.from_list(
         [
             Something(1, "one"),
-        ]
+        ],
     )
     rs2 = RichSet.from_list(
         [
             Something(1, "one"),
             Something(3, "three"),
-        ]
+        ],
     )
     assert rs1.is_subset(rs2)
     assert not rs2.is_subset(rs1)
@@ -116,12 +116,12 @@ def test_richset_is_superset() -> None:
         [
             Something(1, "one"),
             Something(3, "three"),
-        ]
+        ],
     )
     rs2 = RichSet.from_list(
         [
             Something(1, "one"),
-        ]
+        ],
     )
     assert rs1.is_superset(rs2)
     assert not rs2.is_superset(rs1)
@@ -134,19 +134,19 @@ def test_richset_is_disjoint() -> None:
         [
             Something(1, "one"),
             Something(3, "three"),
-        ]
+        ],
     )
     rs2 = RichSet.from_list(
         [
             Something(1, "one"),
             Something(2, "two"),
-        ]
+        ],
     )
     rs3 = RichSet.from_list(
         [
             Something(3, "three"),
             Something(4, "four"),
-        ]
+        ],
     )
     assert not rs1.is_disjoint(rs2)
     assert not rs2.is_disjoint(rs1)
@@ -169,20 +169,20 @@ def test_richset_is_equal_as_set() -> None:
         [
             Something(1, "one"),
             Something(2, "two"),
-        ]
+        ],
     )
     rs2 = RichSet.from_list(
         [
             Something(1, "one"),
             Something(2, "two"),
-        ]
+        ],
     )
     rs3 = RichSet.from_list(
         [
             Something(1, "one"),
             Something(2, "two"),
             Something(3, "three"),
-        ]
+        ],
     )
     assert rs1.is_equal_as_set(rs2)
     assert rs2.is_equal_as_set(rs1)
@@ -203,13 +203,13 @@ def test_richset_cartesian_product() -> None:
         [
             Something(1, "one"),
             Something(2, "two"),
-        ]
+        ],
     )
     rs2 = RichSet.from_list(
         [
             Foo(3, "three"),
             Foo(4, "four"),
-        ]
+        ],
     )
     assert rs1.cartesian_product(rs2).to_set() == {
         (Something(1, "one"), Foo(3, "three")),
@@ -224,14 +224,14 @@ def test_richset_zip() -> None:
         [
             Something(1, "one"),
             Something(2, "two"),
-        ]
+        ],
     )
     rs2 = RichSet.from_list(
         [
             Foo(3, "three"),
             Foo(4, "four"),
             Foo(5, "five"),
-        ]
+        ],
     )
     assert rs1.zip(rs2).to_set() == {
         (Something(1, "one"), Foo(3, "three")),
