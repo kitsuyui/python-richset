@@ -22,6 +22,16 @@ Fill = TypeVar("Fill")
 OnDuplicateActions = Literal["error", "first", "last"]
 
 
+def duplicate_value_selector(
+    duplicated: Literal["first", "last"] | Callable[[list[T]], T],
+) -> Callable[[list[T]], T]:
+    if duplicated == "first":
+        return lambda values: values[0]
+    if duplicated == "last":
+        return lambda values: values[-1]
+    return duplicated
+
+
 @dataclass(frozen=True)
 class RichSet(Generic[T]):
     records: tuple[T, ...]
@@ -109,11 +119,8 @@ there are multiple records with the same key.
             if len(base) != self.size():
                 raise ValueError("duplicate keys")
             return {k: v[0] for k, v in base.items()}
-        if duplicated == "first":
-            return {k: v[0] for k, v in base.items()}
-        if duplicated == "last":
-            return {k: v[-1] for k, v in base.items()}
-        return {k: duplicated(v) for k, v in base.items()}
+        selector = duplicate_value_selector(duplicated)
+        return {k: selector(v) for k, v in base.items()}
 
     def to_dict_of_list(
         self,
@@ -302,6 +309,17 @@ unshifted to the beginning."""
 
     # search
 
+    def indexed_records(
+        self, *, reverse: bool = False,
+    ) -> Iterable[tuple[int, T]]:
+        if reverse:
+            size = self.size()
+            return (
+                (size - i - 1, item)
+                for i, item in enumerate(reversed(self.records))
+            )
+        return enumerate(self.records)
+
     def index_of(
         self,
         predicate: Callable[[T], bool],
@@ -311,16 +329,9 @@ unshifted to the beginning."""
         """Returns the index of the first record satisfying the predicate.
 
         returns -1 if no record satisfies the predicate."""
-        if reverse:
-            size = self.size()
-            for i, item in enumerate(reversed(self.records)):
-                if predicate(item):
-                    return size - i - 1
-            return -1
-
-        for i, r in enumerate(self.records):
-            if predicate(r):
-                return i
+        for index, record in self.indexed_records(reverse=reverse):
+            if predicate(record):
+                return index
         return -1
 
     def contains(self, predicate: Callable[[T], bool]) -> bool:
