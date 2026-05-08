@@ -86,15 +86,15 @@ richset.get_nth(100, default=Something(-1, 'default'))  # => Something(-1, 'defa
 
 ```python
 richset.pushed(Something(4, 'four')).to_list()  # => [Something(1, 'one'), Something(2, 'two'), Something(3, 'three'), Something(4, 'four')]
-richset.unshift(Something(4, 'four')).to_list()  # => [Something(4, 'four'), Something(1, 'one'), Something(2, 'two'), Something(3, 'three')]
+richset.unshifted(Something(4, 'four')).to_list()  # => [Something(4, 'four'), Something(1, 'one'), Something(2, 'two'), Something(3, 'three')]
 richset.popped()  # => Something(3, 'three'), RichSet([Something(1, 'one'), Something(2, 'two')])
-richset.shift()  # => Something(1, 'one'), RichSet([Something(2, 'two'), Something(3, 'three')])
+richset.shifted()  # => Something(1, 'one'), RichSet([Something(2, 'two'), Something(3, 'three')])
 richset.slice(1, 2).to_list()  # => [Something(2, 'two')]
 richset.divide_at(1)  # => RichSet([Something(1, 'one')]), RichSet([Something(2, 'two'), Something(3, 'three')])
 ```
 
-- `pushed_all()` and `unshift_all()` are similar to `pushed()` and `unshift()` but they accept multiple items.
-- `popped_n()` and `shift_n()` are similar to `popped()` and `shift()` but they accept count of items.
+- `pushed_all()` and `unshifted_all()` are similar to `pushed()` and `unshifted()` but they accept multiple items.
+- `popped_n()` and `shifted_n()` are similar to `popped()` and `shifted()` but they accept count of items.
 
 ### List functional manipulations
 
@@ -107,8 +107,8 @@ richset.filter(lambda s: s.id > 1).to_list()  # => [Something(2, 'two'), Somethi
 ### Search
 
 ```python
-richset.index(lambda s: s.id == 2)  # => 1
-richset.indices(lambda s: s.id == 2)  # => [1]
+richset.index_of(lambda s: s.id == 2)  # => 1
+richset.indices_of(lambda s: s.id == 2)  # => [1]
 richset.search_first(lambda s: s.id == 2)  # => Something(2, 'two')
 richset.search_last(lambda s: s.id == 2)  # => Something(2, 'two')
 richset.search_all(lambda s: s.id == 2)  # => [Something(2, 'two')]
@@ -127,7 +127,7 @@ richset.reversed().to_list()  # => [Something(3, 'three'), Something(2, 'two'), 
 
 ```python
 richset.is_empty()  # => True if empty
-richset.is_not_empty()  # => True if not empty
+richset.is_non_empty()  # => True if not empty
 richset.size()  # => 3
 richset.count(lambda s: s.id > 1)  # => 2
 ```
@@ -170,7 +170,7 @@ richset.aggregate_by(key=lambda r: r.id % 2, fn=lambda a, b: a + b.name, initial
 ## Paging
 
 ```python
-richset.page(1, 2).to_list()  # => [Something(1, 'one'), Something(2, 'two')]
+richset.page(offset=1, limit=2).to_list()  # => [Something(2, 'two'), Something(3, 'three')]
 richset.split_into_pages(2).to_list()  # => [RichSet([Something(1, 'one'), Something(2, 'two')]), RichSet([Something(3, 'three')])]
 ```
 
