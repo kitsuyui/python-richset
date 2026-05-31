@@ -222,7 +222,12 @@ there are multiple records with the same key.
         return RichSet.from_list(list(filter(f, self.records)))
 
     def unique(self, key: Callable[[T], Key]) -> RichSet[T]:
-        """Returns a new RichSet with unique records."""
+        """Returns a new RichSet with unique records.
+
+        When multiple records share the same key, the first occurrence is kept
+        (first-wins). This is consistent with insertion order of the original
+        iterable. Use ``to_dict(duplicated='last')`` when last-wins is
+        needed."""
         new_records = []
         seen = set()
         for r in self.records:
