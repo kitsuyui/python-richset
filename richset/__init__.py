@@ -195,11 +195,11 @@ there are multiple records with the same key.
         return default
 
     def one(self) -> T:
-        """Returns the one record in the RichSet.
+        """Returns a single element from the RichSet.
 
-        Currently this method is exactly equivalent to `first()`.
-        But this method is intended to be used in uncertain order.
-        So this method might not returns not the first record in the future.
+        The element returned is unspecified — order is not guaranteed.
+        Use :meth:`first` for guaranteed first-element access.
+        Raises IndexError if the RichSet is empty.
         """
         return self.first()
 
@@ -210,10 +210,11 @@ there are multiple records with the same key.
     def get_one(self, default: S) -> T | S: ...
 
     def get_one(self, default: S | None = None) -> T | S | None:
-        """Returns the one record in the RichSet
-        or default value (None) if the RichSet is empty.
+        """Returns a single element from the RichSet, or *default* if empty.
 
-        See also `one()`."""
+        The element returned is unspecified — order is not guaranteed.
+        Use :meth:`get_first` for guaranteed first-element access.
+        """
         return self.get_first(default)
 
     # list manipulations

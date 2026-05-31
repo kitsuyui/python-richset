@@ -103,7 +103,7 @@ def test_richset_one() -> None:
             Something(2, "two"),
         ],
     )
-    assert rs.one() == Something(1, "one")
+    assert rs.one() in rs.records
     with pytest.raises(IndexError) as err:
         RichSet.from_list([]).one()
     assert str(err.value) == "RichSet is empty"
@@ -116,8 +116,8 @@ def test_richset_get_one() -> None:
             Something(2, "two"),
         ],
     )
-    assert rs.get_one() == Something(1, "one")
-    assert rs.get_one(Something(-1, "default")) == Something(1, "one")
+    assert rs.get_one() in rs.records
+    assert rs.get_one(Something(-1, "default")) in rs.records
     rs2 = RichSet[Something].from_list([])
     assert rs2.get_one() is None
     assert rs2.get_one(Something(-1, "default")) == Something(-1, "default")
