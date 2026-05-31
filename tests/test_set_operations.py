@@ -1,5 +1,7 @@
 from dataclasses import dataclass
 
+import pytest
+
 from richset import RichSet
 
 
@@ -230,13 +232,35 @@ def test_richset_zip() -> None:
         [
             Foo(3, "three"),
             Foo(4, "four"),
-            Foo(5, "five"),
         ],
     )
     assert rs1.zip(rs2).to_set() == {
         (Something(1, "one"), Foo(3, "three")),
         (Something(2, "two"), Foo(4, "four")),
     }
+
+
+def test_richset_zip_unequal_length_raises() -> None:
+    rs1 = RichSet.from_list([Something(1, "one"), Something(2, "two")])
+    rs2 = RichSet.from_list([Foo(3, "three"), Foo(4, "four"), Foo(5, "five")])
+    with pytest.raises(ValueError):
+        rs1.zip(rs2)
+
+
+def test_richset_zip_longest() -> None:
+    rs1 = RichSet.from_list(
+        [
+            Something(1, "one"),
+            Something(2, "two"),
+        ],
+    )
+    rs2 = RichSet.from_list(
+        [
+            Foo(3, "three"),
+            Foo(4, "four"),
+            Foo(5, "five"),
+        ],
+    )
     assert rs1.zip_longest(rs2).to_set() == {
         (Something(1, "one"), Foo(3, "three")),
         (Something(2, "two"), Foo(4, "four")),
