@@ -287,6 +287,8 @@ unshifted to the beginning."""
         """Returns a tuple of the popped records and a new RichSet.
 
         similar to divide_at, but popped records are reversed."""
+        if n < 0:
+            raise ValueError("n must be non-negative")
         if self.size() < n:
             raise IndexError("pop more than size")
         remains, popped_r = self.divide_at(-n)
@@ -303,6 +305,8 @@ unshifted to the beginning."""
         """Returns a tuple of the shifted records and a new RichSet.
 
         (same as divide_at(n))"""
+        if n < 0:
+            raise ValueError("n must be non-negative")
         if self.size() < n:
             raise IndexError("shift more than size")
         return self.divide_at(n)
@@ -310,7 +314,9 @@ unshifted to the beginning."""
     # search
 
     def indexed_records(
-        self, *, reverse: bool = False,
+        self,
+        *,
+        reverse: bool = False,
     ) -> Iterable[tuple[int, T]]:
         if reverse:
             size = self.size()
@@ -432,16 +438,23 @@ symmetric difference of the records."""
 
     @overload
     def zip_longest(
-        self, other: RichSet[S], *, fillvalue: Fill,
+        self,
+        other: RichSet[S],
+        *,
+        fillvalue: Fill,
     ) -> RichSet[tuple[T | Fill, S | Fill]]: ...
 
     @overload
     def zip_longest(
-        self, other: RichSet[S],
+        self,
+        other: RichSet[S],
     ) -> RichSet[tuple[T | None, S | None]]: ...
 
     def zip_longest(
-        self, other: RichSet[S], *, fillvalue: Fill | None = None,
+        self,
+        other: RichSet[S],
+        *,
+        fillvalue: Fill | None = None,
     ) -> RichSet[tuple[T | Fill, S | Fill]]:
         """Returns a new RichSet with the zip_longest of the records.
 
@@ -450,7 +463,9 @@ symmetric difference of the records."""
             return RichSet.from_list(
                 list(
                     itertools.zip_longest(
-                        self.records, other.records, fillvalue=fillvalue,
+                        self.records,
+                        other.records,
+                        fillvalue=fillvalue,
                     ),
                 ),
             )
@@ -512,7 +527,10 @@ symmetric difference of the records."""
         return {k: v.size() for k, v in self.group_by(key).items()}
 
     def count_of_group_by(
-        self, *, key: Callable[[T], Key], predicate: Callable[[T], bool],
+        self,
+        *,
+        key: Callable[[T], Key],
+        predicate: Callable[[T], bool],
     ) -> dict[Key, int]:
         """Returns a dict of the number of records satisfying \
 the predicate grouped by the given key."""
