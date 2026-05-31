@@ -137,6 +137,14 @@ def test_richset_popped_n() -> None:
     ]
     assert rs2.to_list() == [Something(1, "one")]
 
+    popped_items, rs2 = rs.popped_n(0)
+    assert popped_items.to_list() == []
+    assert rs2.to_list() == [
+        Something(1, "one"),
+        Something(2, "two"),
+        Something(3, "three"),
+    ]
+
     rs.popped_n(3)
     with pytest.raises(IndexError) as err:
         rs.popped_n(4)
