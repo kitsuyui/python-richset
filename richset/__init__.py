@@ -310,7 +310,9 @@ unshifted to the beginning."""
     # search
 
     def indexed_records(
-        self, *, reverse: bool = False,
+        self,
+        *,
+        reverse: bool = False,
     ) -> Iterable[tuple[int, T]]:
         if reverse:
             size = self.size()
@@ -432,16 +434,23 @@ symmetric difference of the records."""
 
     @overload
     def zip_longest(
-        self, other: RichSet[S], *, fillvalue: Fill,
+        self,
+        other: RichSet[S],
+        *,
+        fillvalue: Fill,
     ) -> RichSet[tuple[T | Fill, S | Fill]]: ...
 
     @overload
     def zip_longest(
-        self, other: RichSet[S],
+        self,
+        other: RichSet[S],
     ) -> RichSet[tuple[T | None, S | None]]: ...
 
     def zip_longest(
-        self, other: RichSet[S], *, fillvalue: Fill | None = None,
+        self,
+        other: RichSet[S],
+        *,
+        fillvalue: Fill | None = None,
     ) -> RichSet[tuple[T | Fill, S | Fill]]:
         """Returns a new RichSet with the zip_longest of the records.
 
@@ -450,7 +459,9 @@ symmetric difference of the records."""
             return RichSet.from_list(
                 list(
                     itertools.zip_longest(
-                        self.records, other.records, fillvalue=fillvalue,
+                        self.records,
+                        other.records,
+                        fillvalue=fillvalue,
                     ),
                 ),
             )
@@ -512,7 +523,10 @@ symmetric difference of the records."""
         return {k: v.size() for k, v in self.group_by(key).items()}
 
     def count_of_group_by(
-        self, *, key: Callable[[T], Key], predicate: Callable[[T], bool],
+        self,
+        *,
+        key: Callable[[T], Key],
+        predicate: Callable[[T], bool],
     ) -> dict[Key, int]:
         """Returns a dict of the number of records satisfying \
 the predicate grouped by the given key."""
@@ -547,7 +561,11 @@ in the given page (offset and limit)."""
         size: int,
     ) -> list[RichSet[T]]:
         """Returns a list of RichSets with the records \
-split into pages (limit)."""
+split into pages (limit). size must be a positive integer."""
+        if size <= 0:
+            raise ValueError(
+                f"size must be a positive integer, got {size}",
+            )
         return [
             self.page(offset=offset, limit=size)
             for offset in range(0, self.size(), size)

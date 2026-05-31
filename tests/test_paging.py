@@ -1,5 +1,7 @@
 from dataclasses import dataclass
 
+import pytest
+
 from richset import RichSet
 
 
@@ -121,3 +123,19 @@ def test_richset_split_into_pages() -> None:
             ],
         ),
     ]
+
+
+def test_richset_split_into_pages_invalid_size() -> None:
+    rs = RichSet.from_list(
+        [
+            Something(1, "one"),
+            Something(2, "two"),
+        ],
+    )
+    with pytest.raises(ValueError, match="size must be a positive integer"):
+        rs.split_into_pages(0)
+    with pytest.raises(ValueError, match="size must be a positive integer"):
+        rs.split_into_pages(-1)
+    empty = RichSet[Something].from_empty()
+    with pytest.raises(ValueError, match="size must be a positive integer"):
+        empty.split_into_pages(0)
