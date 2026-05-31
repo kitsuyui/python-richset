@@ -417,7 +417,13 @@ symmetric difference of the records."""
         return set(self.records) == set(other.records)
 
     def cartesian_product(self, other: RichSet[S]) -> RichSet[tuple[T, S]]:
-        """Returns a new RichSet with the cartesian product of the records."""
+        """Returns a new RichSet with the cartesian product of the records.
+
+        Produces n * m pairs where n = len(self) and m = len(other). All
+        pairs are materialized in memory at once (eager evaluation), so
+        peak memory grows as O(n * m). Avoid calling this method with
+        large inputs (thousands of records or more) without first
+        confirming the resulting size is acceptable."""
         return RichSet.from_list(
             [(r1, r2) for r1 in self.records for r2 in other.records],
         )
