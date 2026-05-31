@@ -177,7 +177,7 @@ there are multiple records with the same key.
 
     def nth(self, index: int) -> T:
         """Returns the record at the given index."""
-        if index < self.size():
+        if 0 <= index < self.size():
             return self.records[index]
         raise IndexError("index out of range")
 
@@ -190,7 +190,7 @@ there are multiple records with the same key.
     def get_nth(self, index: int, default: S | None = None) -> T | S | None:
         """Returns the record at the given index
         or default value (None) if the index is out of range."""
-        if index < self.size():
+        if 0 <= index < self.size():
             return self.records[index]
         return default
 
