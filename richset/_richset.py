@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import functools
 import itertools
+import warnings
 from collections.abc import Callable, Hashable, Iterable, Iterator
 from dataclasses import dataclass
 from typing import (
@@ -194,12 +195,23 @@ there are multiple records with the same key.
         return default
 
     def one(self) -> T:
-        """Returns the one record in the RichSet.
+        """Returns a record from the RichSet when order does not matter.
 
-        Currently this method is exactly equivalent to `first()`.
-        But this method is intended to be used in uncertain order.
-        So this method might not returns not the first record in the future.
+        Use this when you only need one record and do not care which one.
+        For insertion-order guarantees, use ``first()`` instead.
+
+        .. warning::
+            The current implementation returns the first record, but this
+            behavior is not guaranteed and may change in a future version.
         """
+        warnings.warn(
+            "one() currently returns the first record, but this "
+            "implementation detail is not guaranteed and may change "
+            "in a future version. "
+            "For insertion-order guarantees, use first() instead.",
+            FutureWarning,
+            stacklevel=2,
+        )
         return self.first()
 
     @overload
@@ -209,10 +221,23 @@ there are multiple records with the same key.
     def get_one(self, default: S) -> T | S: ...
 
     def get_one(self, default: S | None = None) -> T | S | None:
-        """Returns the one record in the RichSet
-        or default value (None) if the RichSet is empty.
+        """Returns a record from the RichSet, or a default value if empty.
 
-        See also `one()`."""
+        Use this when you only need one record and do not care which one.
+        For insertion-order guarantees, use ``get_first()`` instead.
+
+        .. warning::
+            The current implementation returns the first record, but this
+            behavior is not guaranteed and may change in a future version.
+        """
+        warnings.warn(
+            "get_one() currently returns the first record, but this "
+            "implementation detail is not guaranteed and may change "
+            "in a future version. "
+            "For insertion-order guarantees, use get_first() instead.",
+            FutureWarning,
+            stacklevel=2,
+        )
         return self.get_first(default)
 
     # list manipulations
