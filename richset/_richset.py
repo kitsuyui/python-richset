@@ -385,21 +385,45 @@ unshifted to the beginning."""
     # set operations
 
     def union(self, other: RichSet[T]) -> RichSet[T]:
-        """Returns a new RichSet with the union of the records."""
-        return RichSet.from_list(list(set(self.records) | set(other.records)))
+        """Returns a new RichSet with the union of the records.
+
+        Records from self appear first in their original order,
+        followed by records from other that are not in self.
+        """
+        seen: dict[T, None] = dict.fromkeys(self.records)
+        for record in other.records:
+            seen[record] = None
+        return RichSet.from_list(list(seen.keys()))
 
     def intersection(self, other: RichSet[T]) -> RichSet[T]:
-        """Returns a new RichSet with the intersection of the records."""
-        return RichSet.from_list(list(set(self.records) & set(other.records)))
+        """Returns a new RichSet with the intersection of the records.
+
+        The result preserves the order of records in self.
+        """
+        other_set = set(other.records)
+        return RichSet.from_list([r for r in self.records if r in other_set])
 
     def difference(self, other: RichSet[T]) -> RichSet[T]:
-        """Returns a new RichSet with the difference of the records."""
-        return RichSet.from_list(list(set(self.records) - set(other.records)))
+        """Returns a new RichSet with the difference of the records.
+
+        The result preserves the order of records in self.
+        """
+        other_set = set(other.records)
+        return RichSet.from_list(
+            [r for r in self.records if r not in other_set],
+        )
 
     def symmetric_difference(self, other: RichSet[T]) -> RichSet[T]:
-        """Returns a new RichSet with the \
-symmetric difference of the records."""
-        return RichSet.from_list(list(set(self.records) ^ set(other.records)))
+        """Returns a new RichSet with the symmetric difference of the records.
+
+        Records in self but not in other appear first (in self's order),
+        followed by records in other but not in self (in other's order).
+        """
+        self_set = set(self.records)
+        other_set = set(other.records)
+        result = [r for r in self.records if r not in other_set]
+        result += [r for r in other.records if r not in self_set]
+        return RichSet.from_list(result)
 
     def is_subset(self, other: RichSet[T]) -> bool:
         """Returns True if self is a subset of other."""
