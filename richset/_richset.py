@@ -584,7 +584,11 @@ in the given page (offset and limit)."""
         size: int,
     ) -> list[RichSet[T]]:
         """Returns a list of RichSets with the records \
-split into pages (limit)."""
+split into pages (limit). size must be a positive integer."""
+        if size <= 0:
+            raise ValueError(
+                f"size must be a positive integer, got {size}",
+            )
         return [
             self.page(offset=offset, limit=size)
             for offset in range(0, self.size(), size)
