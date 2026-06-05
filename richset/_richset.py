@@ -450,9 +450,11 @@ unshifted to the beginning."""
     def zip(self, other: RichSet[S]) -> RichSet[tuple[T, S]]:
         """Returns a new RichSet with the zip of the records.
 
-        This performs like the zip() function in Python."""
+        Both RichSets must have the same number of elements;
+        raises ValueError if their lengths differ.
+        Use zip_longest() to pair sequences of unequal length."""
         return RichSet.from_list(
-            list(zip(self.records, other.records, strict=False)),
+            list(zip(self.records, other.records, strict=True)),
         )
 
     @overload
