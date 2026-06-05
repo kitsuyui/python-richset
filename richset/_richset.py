@@ -503,7 +503,12 @@ unshifted to the beginning."""
         key: Callable[[T], Comparable[S]],
         reverse: bool = False,
     ) -> RichSet[T]:
-        """Returns a new RichSet sorted bythe given key."""
+        """Returns a new RichSet sorted by the given key.
+
+        This sort is stable: elements with equal keys preserve their original
+        insertion order, relying on Python's guaranteed stable sort (CPython
+        2.2+). This stability guarantee is part of the RichSet API contract.
+        """
         sorted_ = tuple(sorted(self.records, key=key, reverse=reverse))
         return RichSet.from_tuple(sorted_)
 
