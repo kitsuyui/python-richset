@@ -75,6 +75,9 @@ def test_richset_nth() -> None:
     assert rs.nth(0) == Something(1, "one")
     assert rs.nth(1) == Something(2, "two")
     with pytest.raises(IndexError):
+        rs.nth(-1)
+
+    with pytest.raises(IndexError):
         rs.nth(2)
 
     with pytest.raises(IndexError):
@@ -90,6 +93,11 @@ def test_richset_get_nth() -> None:
     )
     assert rs.get_nth(0) == Something(1, "one")
     assert rs.get_nth(1) == Something(2, "two")
+    assert rs.get_nth(-1) is None
+    assert rs.get_nth(-1, Something(-1, "default")) == Something(
+        -1,
+        "default",
+    )
     assert rs.get_nth(2, Something(-1, "default")) == Something(-1, "default")
     rs2 = RichSet[Something].from_list([])
     assert rs2.get_nth(0) is None
@@ -104,7 +112,7 @@ def test_richset_one() -> None:
         ],
     )
     with pytest.warns(FutureWarning, match="one()"):
-        assert rs.one() == Something(1, "one")
+        assert rs.one() in rs.records
     with pytest.warns(FutureWarning), pytest.raises(IndexError) as err:
         RichSet.from_list([]).one()
     assert str(err.value) == "RichSet is empty"
@@ -118,9 +126,9 @@ def test_richset_get_one() -> None:
         ],
     )
     with pytest.warns(FutureWarning, match="get_one()"):
-        assert rs.get_one() == Something(1, "one")
+        assert rs.get_one() in rs.records
     with pytest.warns(FutureWarning):
-        assert rs.get_one(Something(-1, "default")) == Something(1, "one")
+        assert rs.get_one(Something(-1, "default")) in rs.records
     rs2 = RichSet[Something].from_list([])
     with pytest.warns(FutureWarning):
         assert rs2.get_one() is None

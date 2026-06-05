@@ -36,6 +36,29 @@ def test_richset_sorted() -> None:
     ]
 
 
+def test_richset_sorted_stable() -> None:
+    # Elements with equal keys must preserve their original insertion order
+    # (stable sort contract).
+    rs = RichSet.from_list(
+        [
+            Something(1, "first"),
+            Something(1, "second"),
+            Something(1, "third"),
+        ],
+    )
+    assert rs.sorted(key=lambda r: r.id).to_list() == [
+        Something(1, "first"),
+        Something(1, "second"),
+        Something(1, "third"),
+    ]
+
+    assert rs.sorted(key=lambda r: r.id, reverse=True).to_list() == [
+        Something(1, "first"),
+        Something(1, "second"),
+        Something(1, "third"),
+    ]
+
+
 def test_richset_reversed() -> None:
     rs = RichSet.from_list(
         [

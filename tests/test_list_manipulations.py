@@ -137,6 +137,14 @@ def test_richset_popped_n() -> None:
     ]
     assert rs2.to_list() == [Something(1, "one")]
 
+    popped_items, rs2 = rs.popped_n(0)
+    assert popped_items.to_list() == []
+    assert rs2.to_list() == [
+        Something(1, "one"),
+        Something(2, "two"),
+        Something(3, "three"),
+    ]
+
     rs.popped_n(3)
     with pytest.raises(IndexError) as err:
         rs.popped_n(4)
@@ -146,6 +154,10 @@ def test_richset_popped_n() -> None:
     with pytest.raises(IndexError) as err:
         rs.popped_n(2)
     assert str(err.value) == "pop more than size"
+
+    with pytest.raises(ValueError) as err2:
+        rs.popped_n(-1)
+    assert str(err2.value) == "n must be non-negative"
 
 
 def test_richset_shifted() -> None:
@@ -195,6 +207,10 @@ def test_richset_shifted_n() -> None:
     with pytest.raises(IndexError) as err:
         rs.shifted_n(2)
     assert str(err.value) == "shift more than size"
+
+    with pytest.raises(ValueError) as err2:
+        rs.shifted_n(-1)
+    assert str(err2.value) == "n must be non-negative"
 
 
 def test_richset_slice() -> None:
