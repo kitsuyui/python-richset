@@ -607,15 +607,29 @@ in the given page (offset and limit)."""
         size: int,
     ) -> list[RichSet[T]]:
         """Returns a list of RichSets with the records \
-split into pages (limit). size must be a positive integer."""
+split into pages (limit). size must be a positive integer.
+
+        All pages are materialized eagerly into a list. For large record
+        sets consider `iter_pages` to avoid building the full list at once.
+        """
+        return list(self.iter_pages(size))
+
+    def iter_pages(
+        self,
+        size: int,
+    ) -> Iterator[RichSet[T]]:
+        """Yields RichSets of `size` records, one page at a time.
+
+        Unlike `split_into_pages`, this generator produces each page on
+        demand without building the full list in memory first. size must
+        be a positive integer.
+        """
         if size <= 0:
             raise ValueError(
                 f"size must be a positive integer, got {size}",
             )
-        return [
-            self.page(offset=offset, limit=size)
-            for offset in range(0, self.size(), size)
-        ]
+        for offset in range(0, self.size(), size):
+            yield self.page(offset=offset, limit=size)
 
 
 __all__ = [
