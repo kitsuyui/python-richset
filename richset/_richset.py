@@ -289,6 +289,8 @@ unshifted to the beginning."""
         similar to divide_at, but popped records are reversed."""
         if self.size() < n:
             raise IndexError("pop more than size")
+        if n == 0:
+            return self.slice(0, 0), self
         remains, popped_r = self.divide_at(-n)
         return popped_r.reversed(), remains
 
