@@ -577,6 +577,10 @@ the predicate grouped by the given key."""
     ) -> RichSet[T]:
         """Returns a new RichSet with the records \
 in the given page (offset and limit)."""
+        if offset < 0:
+            raise ValueError(f"offset must be non-negative, got {offset}")
+        if limit < 0:
+            raise ValueError(f"limit must be non-negative, got {limit}")
         return RichSet.from_tuple(self.records[offset : offset + limit])
 
     def split_into_pages(
