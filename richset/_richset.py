@@ -654,10 +654,24 @@ the predicate grouped by the given key."""
             raise ValueError(
                 f"size must be a positive integer, got {size}",
             )
-        return [
-            self.page(offset=offset, limit=size)
-            for offset in range(0, self.size(), size)
-        ]
+        return list(self.iter_pages(size))
+
+    def iter_pages(
+        self,
+        size: int,
+    ) -> Iterator[RichSet[T]]:
+        """Yields RichSets of `size` records, one page at a time.
+
+        Unlike `split_into_pages`, this generator produces each page on
+        demand without building the full list in memory first. size must
+        be a positive integer.
+        """
+        if size <= 0:
+            raise ValueError(
+                f"size must be a positive integer, got {size}",
+            )
+        for offset in range(0, self.size(), size):
+            yield self.page(offset=offset, limit=size)
 
 
 __all__ = [
