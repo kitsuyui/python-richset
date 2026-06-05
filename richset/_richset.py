@@ -176,7 +176,7 @@ there are multiple records with the same key.
 
     def nth(self, index: int) -> T:
         """Returns the record at the given index."""
-        if index < self.size():
+        if 0 <= index < self.size():
             return self.records[index]
         raise IndexError("index out of range")
 
@@ -189,16 +189,16 @@ there are multiple records with the same key.
     def get_nth(self, index: int, default: S | None = None) -> T | S | None:
         """Returns the record at the given index
         or default value (None) if the index is out of range."""
-        if index < self.size():
+        if 0 <= index < self.size():
             return self.records[index]
         return default
 
     def one(self) -> T:
-        """Returns the one record in the RichSet.
+        """Returns a single element from the RichSet.
 
-        Currently this method is exactly equivalent to `first()`.
-        But this method is intended to be used in uncertain order.
-        So this method might not returns not the first record in the future.
+        The element returned is unspecified — order is not guaranteed.
+        Use :meth:`first` for guaranteed first-element access.
+        Raises IndexError if the RichSet is empty.
         """
         return self.first()
 
@@ -209,10 +209,11 @@ there are multiple records with the same key.
     def get_one(self, default: S) -> T | S: ...
 
     def get_one(self, default: S | None = None) -> T | S | None:
-        """Returns the one record in the RichSet
-        or default value (None) if the RichSet is empty.
+        """Returns a single element from the RichSet, or *default* if empty.
 
-        See also `one()`."""
+        The element returned is unspecified — order is not guaranteed.
+        Use :meth:`get_first` for guaranteed first-element access.
+        """
         return self.get_first(default)
 
     # list manipulations
@@ -222,7 +223,12 @@ there are multiple records with the same key.
         return RichSet.from_list(list(filter(f, self.records)))
 
     def unique(self, key: Callable[[T], Key]) -> RichSet[T]:
-        """Returns a new RichSet with unique records."""
+        """Returns a new RichSet with unique records.
+
+        When multiple records share the same key, the first occurrence is kept
+        (first-wins). This is consistent with insertion order of the original
+        iterable. Use ``to_dict(duplicated='last')`` when last-wins is
+        needed."""
         new_records = []
         seen = set()
         for r in self.records:
@@ -286,8 +292,12 @@ unshifted to the beginning."""
         """Returns a tuple of the popped records and a new RichSet.
 
         similar to divide_at, but popped records are reversed."""
+        if n < 0:
+            raise ValueError("n must be non-negative")
         if self.size() < n:
             raise IndexError("pop more than size")
+        if n == 0:
+            return self.slice(0, 0), self
         remains, popped_r = self.divide_at(-n)
         return popped_r.reversed(), remains
 
@@ -302,6 +312,8 @@ unshifted to the beginning."""
         """Returns a tuple of the shifted records and a new RichSet.
 
         (same as divide_at(n))"""
+        if n < 0:
+            raise ValueError("n must be non-negative")
         if self.size() < n:
             raise IndexError("shift more than size")
         return self.divide_at(n)
@@ -385,21 +397,45 @@ unshifted to the beginning."""
     # set operations
 
     def union(self, other: RichSet[T]) -> RichSet[T]:
-        """Returns a new RichSet with the union of the records."""
-        return RichSet.from_list(list(set(self.records) | set(other.records)))
+        """Returns a new RichSet with the union of the records.
+
+        Records from self appear first in their original order,
+        followed by records from other that are not in self.
+        """
+        seen: dict[T, None] = dict.fromkeys(self.records)
+        for record in other.records:
+            seen[record] = None
+        return RichSet.from_list(list(seen.keys()))
 
     def intersection(self, other: RichSet[T]) -> RichSet[T]:
-        """Returns a new RichSet with the intersection of the records."""
-        return RichSet.from_list(list(set(self.records) & set(other.records)))
+        """Returns a new RichSet with the intersection of the records.
+
+        The result preserves the order of records in self.
+        """
+        other_set = set(other.records)
+        return RichSet.from_list([r for r in self.records if r in other_set])
 
     def difference(self, other: RichSet[T]) -> RichSet[T]:
-        """Returns a new RichSet with the difference of the records."""
-        return RichSet.from_list(list(set(self.records) - set(other.records)))
+        """Returns a new RichSet with the difference of the records.
+
+        The result preserves the order of records in self.
+        """
+        other_set = set(other.records)
+        return RichSet.from_list(
+            [r for r in self.records if r not in other_set],
+        )
 
     def symmetric_difference(self, other: RichSet[T]) -> RichSet[T]:
-        """Returns a new RichSet with the \
-symmetric difference of the records."""
-        return RichSet.from_list(list(set(self.records) ^ set(other.records)))
+        """Returns a new RichSet with the symmetric difference of the records.
+
+        Records in self but not in other appear first (in self's order),
+        followed by records in other but not in self (in other's order).
+        """
+        self_set = set(self.records)
+        other_set = set(other.records)
+        result = [r for r in self.records if r not in other_set]
+        result += [r for r in other.records if r not in self_set]
+        return RichSet.from_list(result)
 
     def is_subset(self, other: RichSet[T]) -> bool:
         """Returns True if self is a subset of other."""
@@ -426,9 +462,11 @@ symmetric difference of the records."""
     def zip(self, other: RichSet[S]) -> RichSet[tuple[T, S]]:
         """Returns a new RichSet with the zip of the records.
 
-        This performs like the zip() function in Python."""
+        Both RichSets must have the same number of elements;
+        raises ValueError if their lengths differ.
+        Use zip_longest() to pair sequences of unequal length."""
         return RichSet.from_list(
-            list(zip(self.records, other.records, strict=False)),
+            list(zip(self.records, other.records, strict=True)),
         )
 
     @overload
@@ -476,7 +514,12 @@ symmetric difference of the records."""
         key: Callable[[T], Comparable[S]],
         reverse: bool = False,
     ) -> RichSet[T]:
-        """Returns a new RichSet sorted bythe given key."""
+        """Returns a new RichSet sorted by the given key.
+
+        This sort is stable: elements with equal keys preserve their original
+        insertion order, relying on Python's guaranteed stable sort (CPython
+        2.2+). This stability guarantee is part of the RichSet API contract.
+        """
         sorted_ = tuple(sorted(self.records, key=key, reverse=reverse))
         return RichSet.from_tuple(sorted_)
 
@@ -562,6 +605,10 @@ the predicate grouped by the given key."""
         Returns:
             A new RichSet containing records[offset:offset+limit].
         """
+        if offset < 0:
+            raise ValueError(f"offset must be non-negative, got {offset}")
+        if limit < 0:
+            raise ValueError(f"limit must be non-negative, got {limit}")
         return RichSet.from_tuple(self.records[offset : offset + limit])
 
     def split_into_pages(
@@ -571,12 +618,17 @@ the predicate grouped by the given key."""
         """Returns a list of RichSets with the records split into pages.
 
         Args:
-            size: Number of records per page. The last page may contain fewer
-                records if the total count is not evenly divisible by size.
+            size: Number of records per page. Must be a positive integer.
+                The last page may contain fewer records if the total count
+                is not evenly divisible by size.
 
         Returns:
             A list of RichSets, each containing at most ``size`` records.
         """
+        if size <= 0:
+            raise ValueError(
+                f"size must be a positive integer, got {size}",
+            )
         return [
             self.page(offset=offset, limit=size)
             for offset in range(0, self.size(), size)

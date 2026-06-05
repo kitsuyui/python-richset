@@ -37,6 +37,18 @@ def test_richset_unique() -> None:
     ]
 
 
+def test_richset_unique_first_wins() -> None:
+    rs = RichSet.from_list(
+        [
+            Something(1, "first"),
+            Something(1, "second"),
+            Something(2, "only"),
+        ],
+    )
+    result = rs.unique(lambda r: r.id).to_list()
+    assert result == [Something(1, "first"), Something(2, "only")]
+
+
 def test_richset_map() -> None:
     rs = RichSet.from_list(
         [

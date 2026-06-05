@@ -1,5 +1,7 @@
 from dataclasses import dataclass
 
+import pytest
+
 from richset import RichSet
 
 
@@ -230,13 +232,35 @@ def test_richset_zip() -> None:
         [
             Foo(3, "three"),
             Foo(4, "four"),
-            Foo(5, "five"),
         ],
     )
     assert rs1.zip(rs2).to_set() == {
         (Something(1, "one"), Foo(3, "three")),
         (Something(2, "two"), Foo(4, "four")),
     }
+
+
+def test_richset_zip_unequal_length_raises() -> None:
+    rs1 = RichSet.from_list([Something(1, "one"), Something(2, "two")])
+    rs2 = RichSet.from_list([Foo(3, "three"), Foo(4, "four"), Foo(5, "five")])
+    with pytest.raises(ValueError):
+        rs1.zip(rs2)
+
+
+def test_richset_zip_longest() -> None:
+    rs1 = RichSet.from_list(
+        [
+            Something(1, "one"),
+            Something(2, "two"),
+        ],
+    )
+    rs2 = RichSet.from_list(
+        [
+            Foo(3, "three"),
+            Foo(4, "four"),
+            Foo(5, "five"),
+        ],
+    )
     assert rs1.zip_longest(rs2).to_set() == {
         (Something(1, "one"), Foo(3, "three")),
         (Something(2, "two"), Foo(4, "four")),
@@ -247,3 +271,81 @@ def test_richset_zip() -> None:
         (Something(2, "two"), Foo(4, "four")),
         (Something(3, "three"), Foo(5, "five")),
     }
+
+
+def test_richset_union_order() -> None:
+    rs1 = RichSet.from_list(
+        [
+            Something(2, "two"),
+            Something(1, "one"),
+        ],
+    )
+    rs2 = RichSet.from_list(
+        [
+            Something(3, "three"),
+            Something(1, "one"),
+        ],
+    )
+    assert rs1.union(rs2).records == (
+        Something(2, "two"),
+        Something(1, "one"),
+        Something(3, "three"),
+    )
+
+
+def test_richset_intersection_order() -> None:
+    rs1 = RichSet.from_list(
+        [
+            Something(3, "three"),
+            Something(1, "one"),
+            Something(2, "two"),
+        ],
+    )
+    rs2 = RichSet.from_list(
+        [
+            Something(1, "one"),
+            Something(3, "three"),
+        ],
+    )
+    assert rs1.intersection(rs2).records == (
+        Something(3, "three"),
+        Something(1, "one"),
+    )
+
+
+def test_richset_difference_order() -> None:
+    rs1 = RichSet.from_list(
+        [
+            Something(3, "three"),
+            Something(1, "one"),
+            Something(2, "two"),
+        ],
+    )
+    rs2 = RichSet.from_list(
+        [
+            Something(1, "one"),
+        ],
+    )
+    assert rs1.difference(rs2).records == (
+        Something(3, "three"),
+        Something(2, "two"),
+    )
+
+
+def test_richset_symmetric_difference_order() -> None:
+    rs1 = RichSet.from_list(
+        [
+            Something(2, "two"),
+            Something(1, "one"),
+        ],
+    )
+    rs2 = RichSet.from_list(
+        [
+            Something(3, "three"),
+            Something(1, "one"),
+        ],
+    )
+    assert rs1.symmetric_difference(rs2).records == (
+        Something(2, "two"),
+        Something(3, "three"),
+    )
