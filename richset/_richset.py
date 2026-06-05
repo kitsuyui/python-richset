@@ -287,6 +287,8 @@ unshifted to the beginning."""
         """Returns a tuple of the popped records and a new RichSet.
 
         similar to divide_at, but popped records are reversed."""
+        if n < 0:
+            raise ValueError("n must be non-negative")
         if self.size() < n:
             raise IndexError("pop more than size")
         if n == 0:
@@ -305,6 +307,8 @@ unshifted to the beginning."""
         """Returns a tuple of the shifted records and a new RichSet.
 
         (same as divide_at(n))"""
+        if n < 0:
+            raise ValueError("n must be non-negative")
         if self.size() < n:
             raise IndexError("shift more than size")
         return self.divide_at(n)
