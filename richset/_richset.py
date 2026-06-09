@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import functools
 import itertools
+import warnings
 from collections.abc import Callable, Hashable, Iterable, Iterator
 from dataclasses import dataclass
 from typing import (
@@ -199,7 +200,19 @@ there are multiple records with the same key.
         The element returned is unspecified — order is not guaranteed.
         Use :meth:`first` for guaranteed first-element access.
         Raises IndexError if the RichSet is empty.
+
+        .. warning::
+            The current implementation returns the first record, but this
+            behavior is not guaranteed and may change in a future version.
         """
+        warnings.warn(
+            "one() currently returns the first record, but this "
+            "implementation detail is not guaranteed and may change "
+            "in a future version. "
+            "For insertion-order guarantees, use first() instead.",
+            FutureWarning,
+            stacklevel=2,
+        )
         return self.first()
 
     @overload
@@ -213,7 +226,19 @@ there are multiple records with the same key.
 
         The element returned is unspecified — order is not guaranteed.
         Use :meth:`get_first` for guaranteed first-element access.
+
+        .. warning::
+            The current implementation returns the first record, but this
+            behavior is not guaranteed and may change in a future version.
         """
+        warnings.warn(
+            "get_one() currently returns the first record, but this "
+            "implementation detail is not guaranteed and may change "
+            "in a future version. "
+            "For insertion-order guarantees, use get_first() instead.",
+            FutureWarning,
+            stacklevel=2,
+        )
         return self.get_first(default)
 
     # list manipulations
