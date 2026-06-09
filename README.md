@@ -5,7 +5,7 @@
 ![Coverage](https://raw.githubusercontent.com/kitsuyui/octocov-central/main/badges/kitsuyui/python-richset/coverage.svg)
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 
-richset interporlates with set, dict, and list.
+richset interpolates with set, dict, and list.
 
 ## Motivations and Concepts
 
@@ -44,7 +44,7 @@ richset = RichSet.from_list([
 ### Conversions
 
 ```python
-richset.to_list()  # => [Something(1, 'one'), Something(2, 'one'), Something(3, 'three')]
+richset.to_list()  # => [Something(1, 'one'), Something(2, 'two'), Something(3, 'three')]
 richset.to_tuple()  # => (Something(1, 'one'), Something(2, 'two'), Something(3, 'three'))
 richset.to_set()  # => {Something(1, 'one'), Something(2, 'two'), Something(3, 'three')}
 richset.to_frozenset()  # => frozenset({Something(1, 'one'), Something(2, 'two'), Something(3, 'three')})
@@ -100,7 +100,7 @@ richset.divide_at(1)  # => RichSet([Something(1, 'one')]), RichSet([Something(2,
 
 ```python
 richset.unique(lambda s: s.id)  # => unique by id
-richset.map(lambda s: s.id).to_list()  # => [1, 2]
+richset.map(lambda s: s.id).to_list()  # => [1, 2, 3]
 richset.filter(lambda s: s.id > 1).to_list()  # => [Something(2, 'two'), Something(3, 'three')]
 ```
 
