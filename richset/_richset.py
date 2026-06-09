@@ -594,8 +594,17 @@ the predicate grouped by the given key."""
         offset: int,
         limit: int,
     ) -> RichSet[T]:
-        """Returns a new RichSet with the records \
-in the given page (offset and limit)."""
+        """Returns a new RichSet with the records in the given page.
+
+        Args:
+            offset: 0-based record index to start from (records to skip,
+                not a page number). offset=0 starts from the first record;
+                offset=10 skips the first 10 records.
+            limit: Maximum number of records to return (records per page).
+
+        Returns:
+            A new RichSet containing records[offset:offset+limit].
+        """
         if offset < 0:
             raise ValueError(f"offset must be non-negative, got {offset}")
         if limit < 0:
@@ -606,8 +615,16 @@ in the given page (offset and limit)."""
         self,
         size: int,
     ) -> list[RichSet[T]]:
-        """Returns a list of RichSets with the records \
-split into pages (limit). size must be a positive integer."""
+        """Returns a list of RichSets with the records split into pages.
+
+        Args:
+            size: Number of records per page. Must be a positive integer.
+                The last page may contain fewer records if the total count
+                is not evenly divisible by size.
+
+        Returns:
+            A list of RichSets, each containing at most ``size`` records.
+        """
         if size <= 0:
             raise ValueError(
                 f"size must be a positive integer, got {size}",
