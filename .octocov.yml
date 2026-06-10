@@ -2,6 +2,7 @@
 coverage:
   paths:
     - coverage.xml
+  acceptable: 95%
 codeToTestRatio:
   code:
     - "**/*.py"
