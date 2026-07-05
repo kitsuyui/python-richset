@@ -156,3 +156,27 @@ def test_richset_split_into_pages_invalid_size() -> None:
     empty = RichSet[Something].from_empty()
     with pytest.raises(ValueError, match="size must be a positive integer"):
         empty.split_into_pages(0)
+
+
+def test_richset_iter_pages() -> None:
+    rs = RichSet.from_list(
+        [
+            Something(1, "one"),
+            Something(2, "two"),
+            Something(3, "three"),
+            Something(4, "four"),
+            Something(5, "five"),
+        ],
+    )
+    pages = list(rs.iter_pages(2))
+    assert pages == rs.split_into_pages(2)
+    # iter_pages yields one page at a time (lazy evaluation)
+    it = rs.iter_pages(3)
+    first = next(it)
+    assert first == RichSet.from_list(
+        [Something(1, "one"), Something(2, "two"), Something(3, "three")],
+    )
+    second = next(it)
+    assert second == RichSet.from_list(
+        [Something(4, "four"), Something(5, "five")],
+    )
